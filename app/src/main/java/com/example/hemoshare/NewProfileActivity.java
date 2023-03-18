@@ -163,7 +163,7 @@ public class NewProfileActivity extends AppCompatActivity {
     }
 
     public void uploadProfileImgToStorage(Uri profileImgUri){
-        StorageReference fileRef = storageRef.child("profile.png");
+        StorageReference fileRef = storageRef.child("users/"+mAuth.getCurrentUser().getUid()+"/profile.jpg");
         fileRef.putFile(profileImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
