@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_sign_up"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".ProfileActivity">
+
+    <!--Profile Image-->
+    <ImageView
+        android:layout_width="172dp"
+        android:layout_height="178dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/imgProfile"
+        android:src="@drawable/ic_baseline_account_circle_24"/>
+
+    <!--Profile Name-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Om Parab"
+        android:id="@+id/tvProfileName"
+        android:textColor="@color/black"
+        android:layout_marginBottom="5dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:backgroundTint="#F3EED9"
+        android:layout_marginVertical="10dp"
+        app:cardCornerRadius="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:weightSum="3">
+
+                <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginHorizontal="8dp"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Age"
+                    android:textColor="#F44336"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    />
+
+ <!--Age-->
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvAge"
+                    android:text="19 Years"
+                        android:textColor="@color/black"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="8dp"
+                android:padding="2dp"
+                android:layout_height="match_parent">
+
+<!--Blood Type-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvBloodType"
+                    android:text="AB +ve"
+                    android:drawablePadding="5dp"
+                    android:textColor="@color/black"
+                    android:drawableLeft="@drawable/ic_baseline_bloodtype_24"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender"
+                    android:textColor="#F44336"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+<!--Gender-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvGender"
+                    android:text="Male"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F3EED9"
+        app:cardCornerRadius="14dp"
+        android:layout_marginVertical="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Personal Information"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>-->
+
+<!--Name-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:id="@+id/tvName"
+                android:drawableLeft="@drawable/ic_baseline_account_circle_24"
+                android:drawablePadding="20dp"
+                android:text="Om Parab"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+<!--Email-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvEmail"
+                android:layout_margin="5dp"
+                android:drawableLeft="@drawable/ic_baseline_email_24"
+                android:drawablePadding="20dp"
+                android:text="omparab2682003@gmail.com"
+                android:textColor="@color/black"/>
+
+<!--Phone Number-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvPhoneNumber"
+                android:layout_margin="5dp"
+                android:drawableLeft="@drawable/ic_baseline_phone_24"
+                android:drawablePadding="20dp"
+                android:text="8767659903"
+                android:textColor="@color/black"/>
+
+<!--City-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvCity"
+                android:layout_margin="5dp"
+                android:drawableLeft="@drawable/ic_baseline_location_24"
+                android:drawablePadding="20dp"
+                android:text="Ratnagiri"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F3EED9"
+        app:cardCornerRadius="14dp"
+        android:layout_marginVertical="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+
+                android:layout_marginHorizontal="8dp"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Donation Count"
+                    android:layout_marginVertical="5dp"
+                    android:textColor="#F44336"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+<!--Donation Count-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDonationCount"
+                    android:layout_margin="5dp"
+                    android:text="-"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="8dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Donor Ratings"
+                    android:layout_margin="5dp"
+                    android:textColor="#F44336"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+<!--Donor Ratings-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDonorRatings"
+                    android:drawableLeft="@drawable/ic_baseline_star_rate_24"
+                    android:drawablePadding="5dp"
+                    android:layout_margin="5dp"
+                    android:text="-"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+</LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+<!--Edit Profile Button-->
+    <Button
+    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnEditProfile"
+        android:layout_margin="5dp"
+        android:drawableLeft="@drawable/ic_baseline_edit_24"
+        android:text="Edit Profile"
+
+        />
+
+</LinearLayout>

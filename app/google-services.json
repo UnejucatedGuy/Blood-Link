@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "181540457163",
+    "project_id": "hemo-share-813ca",
+    "storage_bucket": "hemo-share-813ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181540457163:android:1b074446623791db4d694e",
+        "android_client_info": {
+          "package_name": "com.example.hemoshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181540457163-hp66ntjpc7t88b4c5jmn6q6qtfiqb72a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF80kcXt2fL8D6sJJuXgfWMiSdVdMGN6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181540457163-hp66ntjpc7t88b4c5jmn6q6qtfiqb72a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
