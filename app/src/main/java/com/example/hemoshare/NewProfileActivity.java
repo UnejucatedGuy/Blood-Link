@@ -1,5 +1,16 @@
 package com.example.hemoshare;
 
+
+
+import static com.example.hemoshare.Model.Constants.AB_NEG;
+import static com.example.hemoshare.Model.Constants.AB_POS;
+import static com.example.hemoshare.Model.Constants.A_NEG;
+import static com.example.hemoshare.Model.Constants.A_POS;
+import static com.example.hemoshare.Model.Constants.B_NEG;
+import static com.example.hemoshare.Model.Constants.B_POS;
+import static com.example.hemoshare.Model.Constants.O_NEG;
+import static com.example.hemoshare.Model.Constants.O_POS;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,21 +20,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.method.CharacterPickerDialog;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -83,6 +91,7 @@ public class NewProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveData();
+
             }
         });
 
@@ -96,6 +105,66 @@ public class NewProfileActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void assignBloodGroups(String bloodType) {
+        unsubscribeAllTopics();
+        switch (bloodType){
+            case "AB+" :
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
+                return;
+            case "AB-" :
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_NEG);
+                return;
+            case "O+" :
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(O_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(A_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(B_POS);
+                return;
+            case "O-" :
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_NEG);
+                FirebaseMessaging.getInstance().subscribeToTopic(O_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(O_NEG);
+                FirebaseMessaging.getInstance().subscribeToTopic(A_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(A_NEG);
+                FirebaseMessaging.getInstance().subscribeToTopic(B_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(B_NEG);
+                return;
+            case "A+" :
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(A_POS);
+                return;
+            case "A-" :
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_NEG);
+                FirebaseMessaging.getInstance().subscribeToTopic(A_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(A_NEG);
+                return;
+            case "B+" :
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(B_POS);
+                return;
+            case "B-" :
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(AB_NEG);
+                FirebaseMessaging.getInstance().subscribeToTopic(B_POS);
+                FirebaseMessaging.getInstance().subscribeToTopic(B_NEG);
+                return;
+        }
+    }
+
+    private void unsubscribeAllTopics() {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(AB_POS);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(AB_NEG);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(O_POS);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(O_NEG);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(A_POS);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(A_NEG);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(B_POS);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(B_NEG);
     }
 
     @Override
@@ -137,9 +206,11 @@ public class NewProfileActivity extends AppCompatActivity {
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
+                assignBloodGroups(bloodType);
                 Toast.makeText(NewProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
             }
         });
+
 
 
 
@@ -169,6 +240,7 @@ public class NewProfileActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
             }
         });
+
     }
 
 
