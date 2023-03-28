@@ -2,14 +2,7 @@ package com.example.hemoshare;
 
 
 
-import static com.example.hemoshare.Model.Constants.AB_NEG;
-import static com.example.hemoshare.Model.Constants.AB_POS;
-import static com.example.hemoshare.Model.Constants.A_NEG;
-import static com.example.hemoshare.Model.Constants.A_POS;
-import static com.example.hemoshare.Model.Constants.B_NEG;
-import static com.example.hemoshare.Model.Constants.B_POS;
-import static com.example.hemoshare.Model.Constants.O_NEG;
-import static com.example.hemoshare.Model.Constants.O_POS;
+
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.hemoshare.Model.Constants;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -107,7 +101,7 @@ public class NewProfileActivity extends AppCompatActivity {
 
     }
 
-    public void assignBloodGroups(String bloodType) {
+   /* public void assignBloodGroups(String bloodType) {
         unsubscribeAllTopics();
         switch (bloodType){
             case "AB+" :
@@ -165,7 +159,7 @@ public class NewProfileActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(A_NEG);
         FirebaseMessaging.getInstance().unsubscribeFromTopic(B_POS);
         FirebaseMessaging.getInstance().unsubscribeFromTopic(B_NEG);
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -206,7 +200,7 @@ public class NewProfileActivity extends AppCompatActivity {
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                assignBloodGroups(bloodType);
+                Constants.assignBloodGroups(bloodType);
                 Toast.makeText(NewProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
             }
         });

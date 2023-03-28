@@ -1,6 +1,7 @@
 package com.example.hemoshare;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,17 +13,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hemoshare.Model.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail,txtPassword;
     private TextView btnSignUp;
     private Button btnLogin;
+    private String bloodGroup,userID;
 
     FirebaseAuth mAuth;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btnSignUp);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
+
+                        AssigNotifications();
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     }
@@ -86,6 +99,20 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
+
+    }
+
+    private void AssigNotifications() {
+        //assigning blood groups for notifications
+        userID = mAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = db.collection("users").document(userID);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                bloodGroup = value.getString("bloodType");
+            }
+        });
+        Constants.assignBloodGroups(bloodGroup);
 
     }
 }

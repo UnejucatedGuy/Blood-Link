@@ -9,23 +9,32 @@ import static com.example.hemoshare.Model.Constants.B_POS;
 import static com.example.hemoshare.Model.Constants.O_NEG;
 import static com.example.hemoshare.Model.Constants.O_POS;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.hemoshare.Model.Constants;
 import com.example.hemoshare.Model.NotificationData;
 import com.example.hemoshare.Model.PushNotification;
 import com.example.hemoshare.api.ApiUtilities;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,10 +47,13 @@ public class RequestBloodActivity extends AppCompatActivity {
     EditText edtName,edtPhoneNo,edtLocation,edtBloodType,edtUrgency,edtNote;
     Button btnRequestBlood;
 
-    String name,phoneNo,location,bloodType,urgency,note,userID;
+    String name,phoneNo,location,bloodType,urgency,note,time,userID;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
+
+    DateFormat formatter = new SimpleDateFormat("h:mm a");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +79,8 @@ public class RequestBloodActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveRequest();
+                Intent intent = new Intent(RequestBloodActivity.this,RequestsActivity.class);
+                startActivity(intent);
 
 
 
@@ -100,6 +114,8 @@ public class RequestBloodActivity extends AppCompatActivity {
         bloodType = edtBloodType.getText().toString();
         urgency = edtUrgency.getText().toString();
         note = edtNote.getText().toString();
+        time = formatter.format(new Date());
+
 
         Map<String, Object> request = new HashMap<>();
         request.put("name", name);
@@ -108,6 +124,7 @@ public class RequestBloodActivity extends AppCompatActivity {
         request.put("bloodType",bloodType);
         request.put("urgency",urgency);
         request.put("note",note);
+        request.put("time",time);
 
         //Saving in Firebase Database
         DocumentReference documentReference = db.collection("requests").document();
@@ -149,12 +166,25 @@ public class RequestBloodActivity extends AppCompatActivity {
                 PushNotification notification = new PushNotification(new NotificationData("Blood Requirement in your Area",name +" needs "+bloodType+" Blood" ),TOPIC);
                 sendNotification(notification);
                 Toast.makeText(RequestBloodActivity.this, "Request Submitted Successfully", Toast.LENGTH_SHORT).show();
-
-                DocumentReference documentReference = db.collection("users").document(userID);
-                FirebaseMessaging.getInstance().subscribeToTopic(TOPIC);
+                assignNotifications();
 
 
             }
         });
     }
+
+    private void assignNotifications() {
+            //assigning blood groups for notifications
+        final String[] bloodGroup = new String[1];
+            userID = mAuth.getCurrentUser().getUid();
+            DocumentReference documentReference = db.collection("users").document(userID);
+            documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                   bloodGroup[0] = value.getString("bloodType");
+                }
+            });
+            Constants.assignBloodGroups(bloodGroup[0]);
+
+        }
 }

@@ -1,11 +1,13 @@
 package com.example.hemoshare;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -28,34 +30,22 @@ public class MainActivity extends AppCompatActivity {
         //Firebase auth
         mAuth = FirebaseAuth.getInstance();
 
+
+
+
         //Click Listeners
-        btnProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,ProfileActivity.class));
-            }
+        btnProfile.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,ProfileActivity.class)));
+
+        btnNewProfile.setOnClickListener(v -> {
+            //startActivity(new Intent(MainActivity.this,NewProfileActivity.class));
+            startActivity(new Intent(MainActivity.this,RequestsActivity.class));//test
         });
 
-        btnNewProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,NewProfileActivity.class));
-            }
+        btnLogOut.setOnClickListener(v -> {
+            mAuth.signOut();
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
         });
-
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            }
-        });
-        btnRequestBlood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RequestBloodActivity.class));
-            }
-        });
+        btnRequestBlood.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, RequestBloodActivity.class)));
 
     }
 
