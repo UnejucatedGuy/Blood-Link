@@ -202,6 +202,7 @@ public class NewProfileActivity extends AppCompatActivity {
             public void onSuccess(Void unused) {
                 Constants.assignBloodGroups(bloodType);
                 Toast.makeText(NewProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(NewProfileActivity.this,MainActivity.class));
             }
         });
 

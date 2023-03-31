@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_sign_up"
+    android:gravity="center"
+    tools:context=".SelectLocationActivity">
+
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:layout_margin="20dp"
+    app:cardCornerRadius="30dp">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/google_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        android:id="@+id/tilLocation"
+        android:backgroundTint="@color/cream"
+        app:startIconDrawable="@drawable/ic_baseline_location_24"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_margin="20dp"
+        android:hint="Location">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/actvLocation"
+            android:focusableInTouchMode="false"
+            android:textSize="14sp"
+            android:lines="4"
+            android:maxLines="3"
+            android:inputType="none"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+         style="@style/Widget.Material3.Button.ElevatedButton"
+        android:text="Select Location"
+        android:id="@+id/btnSelectLocation" />
+
+</LinearLayout>

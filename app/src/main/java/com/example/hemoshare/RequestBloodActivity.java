@@ -9,21 +9,28 @@ import static com.example.hemoshare.Model.Constants.B_POS;
 import static com.example.hemoshare.Model.Constants.O_NEG;
 import static com.example.hemoshare.Model.Constants.O_POS;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.hemoshare.Model.Constants;
 import com.example.hemoshare.Model.NotificationData;
 import com.example.hemoshare.Model.PushNotification;
 import com.example.hemoshare.api.ApiUtilities;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -44,8 +51,14 @@ import retrofit2.Response;
 
 public class RequestBloodActivity extends AppCompatActivity {
 
-    EditText edtName,edtPhoneNo,edtLocation,edtBloodType,edtUrgency,edtNote;
+
+    TextInputLayout tilName,tilPhoneNo,tilLocation ,tilBloodGroup,tilNote;
+    AutoCompleteTextView actvBloodGroup,actvLocation;
     Button btnRequestBlood;
+    String[] bloodGroups = new String[]{"AB+","AB-","O+","O-","A+","A-","B+","B-"};
+    String TOPIC = AB_POS
+            ;
+    ArrayAdapter<String> arrayAdapter;
 
     String name,phoneNo,location,bloodType,urgency,note,time,userID;
 
@@ -55,19 +68,25 @@ public class RequestBloodActivity extends AppCompatActivity {
     DateFormat formatter = new SimpleDateFormat("h:mm a");
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_blood);
 
         //Binding UI
-        edtName = findViewById(R.id.edtName);
-        edtPhoneNo = findViewById(R.id.edtPhoneNumber);
-        edtLocation = findViewById(R.id.edtLocation);
-        edtBloodType = findViewById(R.id.edtBloodType);
-        edtUrgency = findViewById(R.id.edtUrgency);
-        edtNote = findViewById(R.id.edtNote);
+        tilName = findViewById(R.id.tilName);
+        tilPhoneNo = findViewById(R.id.tilPhoneNumber);
+        tilLocation = findViewById(R.id.tilLocation);
+        actvBloodGroup = findViewById(R.id.actvBloodGroup);
+        actvLocation = findViewById(R.id.actvLocation);
+        tilBloodGroup = findViewById(R.id.tilBloodType);
+        tilNote = findViewById(R.id.tilNote);
         btnRequestBlood = findViewById(R.id.btnRequestBlood);
+        arrayAdapter = new ArrayAdapter<>(this,R.layout.item_blood_group,bloodGroups);
+        actvBloodGroup.setAdapter(arrayAdapter);
+
+
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -79,13 +98,33 @@ public class RequestBloodActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveRequest();
-                Intent intent = new Intent(RequestBloodActivity.this,RequestsActivity.class);
-                startActivity(intent);
-
 
 
             }
         });
+        actvLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(RequestBloodActivity.this,SelectLocationActivity.class),1);
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1){
+            if(resultCode==RESULT_OK){
+                String result = data.getStringExtra("address");
+                actvLocation.setText(result);
+            }
+            if(resultCode==RESULT_CANCELED){
+
+            }
+        }
     }
 
     private void sendNotification(PushNotification notification) {
@@ -108,83 +147,110 @@ public class RequestBloodActivity extends AppCompatActivity {
 
 
     private void saveRequest() {
-        name = edtName.getText().toString();
-        phoneNo = edtPhoneNo.getText().toString();
-        location = edtLocation.getText().toString();
-        bloodType = edtBloodType.getText().toString();
-        urgency = edtUrgency.getText().toString();
-        note = edtNote.getText().toString();
+        name = tilName.getEditText().getText().toString();
+        phoneNo = tilPhoneNo.getEditText().getText().toString();
+        location =tilLocation.getEditText().getText().toString();
+        bloodType = actvBloodGroup.getText().toString();
+        note = tilNote.getEditText().getText().toString();
         time = formatter.format(new Date());
 
+        if (TextUtils.isEmpty(name)){
+            tilName.setError("Please enter a name ");
+            tilName.requestFocus();
+        }
+        else if (TextUtils.isEmpty(phoneNo)){
+            tilPhoneNo.setError("Please Enter a Password");
+            tilPhoneNo.requestFocus();
+        }
+        else if (TextUtils.isEmpty(location)){
+            tilLocation.setError("Please select a Location");
+            tilLocation.requestFocus();
+        }
+        else if (TextUtils.isEmpty(bloodType)){
+            tilBloodGroup.setError("Please Enter a Password");
+            tilBloodGroup.requestFocus();
+        }
+        else
+        {
+            Map<String, Object> request = new HashMap<>();
+            request.put("name", name);
+            request.put("phoneNo",phoneNo);
+            request.put("location",location);
+            request.put("bloodType",bloodType);
+            //request.put("urgency",urgency);
+            request.put("note",note);
+            request.put("time",time);
 
-        Map<String, Object> request = new HashMap<>();
-        request.put("name", name);
-        request.put("phoneNo",phoneNo);
-        request.put("location",location);
-        request.put("bloodType",bloodType);
-        request.put("urgency",urgency);
-        request.put("note",note);
-        request.put("time",time);
+            //Saving in Firebase Database
+            DocumentReference documentReference = db.collection("requests").document();
+            documentReference.set(request).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
 
-        //Saving in Firebase Database
-        DocumentReference documentReference = db.collection("requests").document();
-        documentReference.set(request).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                String TOPIC = AB_POS;
 
-                switch (bloodType){
-                    case "AB+" :
-                        TOPIC = AB_POS;
-                        break;
-                    case "AB-" :
-                        TOPIC = AB_NEG;
-                        break;
-                    case "O+" :
-                        TOPIC = O_POS;
-                        break;
-                    case "O-" :
-                        TOPIC = O_NEG;
-                        break;
-                    case "A+" :
-                        TOPIC = A_POS;
-                        break;
-                    case "A-" :
-                        TOPIC = A_NEG;
-                        break;
-                    case "B+" :
-                        TOPIC = B_POS;
-                        break;
-                    case "B-" :
-                        TOPIC = B_NEG;
-                        break;
+                    switch (bloodType){
+                        case "AB+" :
+                            TOPIC = AB_POS;
+                            break;
+                        case "AB-" :
+                            TOPIC = AB_NEG;
+                            break;
+                        case "O+" :
+                            TOPIC = O_POS;
+                            break;
+                        case "O-" :
+                            TOPIC = O_NEG;
+                            break;
+                        case "A+" :
+                            TOPIC = A_POS;
+                            break;
+                        case "A-" :
+                            TOPIC = A_NEG;
+                            break;
+                        case "B+" :
+                            TOPIC = B_POS;
+                            break;
+                        case "B-" :
+                            TOPIC = B_NEG;
+                            break;
+                    }
+                    //unsubscribing to toipc so that the device that requests blood not get any notification
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(TOPIC).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            //Sending Notification
+                            PushNotification notification = new PushNotification(new NotificationData("Blood Requirement in your Area",name +" needs "+bloodType+" Blood" ),TOPIC);
+                            sendNotification(notification);
+                            Toast.makeText(RequestBloodActivity.this, "Request Submitted Successfully", Toast.LENGTH_SHORT).show();
+                            assignNotifications();
+
+                        }
+                    });
+
+
+
+
+
                 }
-                //unsubscribing to toipc so that the device that requests blood not get any notification
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(TOPIC);
-
-                //Sending Notification
-                PushNotification notification = new PushNotification(new NotificationData("Blood Requirement in your Area",name +" needs "+bloodType+" Blood" ),TOPIC);
-                sendNotification(notification);
-                Toast.makeText(RequestBloodActivity.this, "Request Submitted Successfully", Toast.LENGTH_SHORT).show();
-                assignNotifications();
-
-
-            }
-        });
-    }
+            });
+        }
+ }
 
     private void assignNotifications() {
             //assigning blood groups for notifications
-        final String[] bloodGroup = new String[1];
+
             userID = mAuth.getCurrentUser().getUid();
             DocumentReference documentReference = db.collection("users").document(userID);
             documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                   bloodGroup[0] = value.getString("bloodType");
+                   String bloodGroup = value.getString("bloodType");
+                    Constants.assignBloodGroups(bloodGroup);
+                    Intent intent = new Intent(RequestBloodActivity.this,RequestsActivity.class);
+                    startActivity(intent);
                 }
             });
-            Constants.assignBloodGroups(bloodGroup[0]);
+
 
         }
 }

@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail,txtPassword;
     private TextView btnSignUp;
     private Button btnLogin;
-    private String bloodGroup,userID;
+    private String userID;
 
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -83,10 +83,11 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-
+                        userID = mAuth.getCurrentUser().getUid();
                         AssigNotifications();
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
                     }
                     else{
                         Toast.makeText(LoginActivity.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -104,15 +105,19 @@ public class LoginActivity extends AppCompatActivity {
 
     private void AssigNotifications() {
         //assigning blood groups for notifications
-        userID = mAuth.getCurrentUser().getUid();
+
         DocumentReference documentReference = db.collection("users").document(userID);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                bloodGroup = value.getString("bloodType");
+                //assert value != null;
+                String bloodGroup = value.getString("bloodType");
+                Constants.assignBloodGroups(bloodGroup);
             }
         });
-        Constants.assignBloodGroups(bloodGroup);
+
+
+
 
     }
 }

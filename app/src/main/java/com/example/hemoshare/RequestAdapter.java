@@ -37,11 +37,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         return requestData.size();
     }
 
-    class RequestViewHolder extends RecyclerView.ViewHolder{
+    static class RequestViewHolder extends RecyclerView.ViewHolder{
 
         TextView txvBloodGroup,txvName,txvTime;
 
-        public RequestViewHolder(@NonNull View itemView) {
+        public RequestViewHolder(@NonNull View itemView){
             super(itemView);
             txvBloodGroup = itemView.findViewById(R.id.txvBloodGroup);
             txvName = itemView.findViewById(R.id.txvName);

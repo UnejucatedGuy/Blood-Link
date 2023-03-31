@@ -52,120 +52,122 @@ public class RequestsActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 String bloodGroup = value.getString("bloodType");
-                switch(bloodGroup)
-                {
-                    case "AB+":
-                        db.collection("requests").whereIn("bloodType", Arrays.asList("AB+")).get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot d:list){
-                                            RequestModel obj = d.toObject(RequestModel.class);
-                                            requestsData.add(obj);
+                if (bloodGroup != null) {
+                    switch(bloodGroup)
+                    {
+                        case "AB+":
+                            db.collection("requests").whereIn("bloodType", Arrays.asList("AB+")).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            for(DocumentSnapshot d:list){
+                                                RequestModel obj = d.toObject(RequestModel.class);
+                                                requestsData.add(obj);
+                                            }
+                                            requestAdapter.notifyDataSetChanged();//update adapter
                                         }
-                                        requestAdapter.notifyDataSetChanged();//update adapter
-                                    }
-                                });
-                        break;
-                    case "AB-":
-                        db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","B+")).get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot d:list){
-                                            RequestModel obj = d.toObject(RequestModel.class);
-                                            requestsData.add(obj);
+                                    });
+                            break;
+                        case "AB-":
+                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-")).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            for(DocumentSnapshot d:list){
+                                                RequestModel obj = d.toObject(RequestModel.class);
+                                                requestsData.add(obj);
+                                            }
+                                            requestAdapter.notifyDataSetChanged();//update adapter
                                         }
-                                        requestAdapter.notifyDataSetChanged();//update adapter
-                                    }
-                                });
-                        break;
-                    case "O+":
-                        db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","O+","A+","B+")).get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot d:list){
-                                            RequestModel obj = d.toObject(RequestModel.class);
-                                            requestsData.add(obj);
+                                    });
+                            break;
+                        case "O+":
+                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","O+","A+","B+")).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            for(DocumentSnapshot d:list){
+                                                RequestModel obj = d.toObject(RequestModel.class);
+                                                requestsData.add(obj);
+                                            }
+                                            requestAdapter.notifyDataSetChanged();//update adapter
                                         }
-                                        requestAdapter.notifyDataSetChanged();//update adapter
-                                    }
-                                });
-                        break;
-                    case "O-":
-                        db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","O+","O-","A+","A-","B+","B-")).get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot d:list){
-                                            RequestModel obj = d.toObject(RequestModel.class);
-                                            requestsData.add(obj);
+                                    });
+                            break;
+                        case "O-":
+                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","O+","O-","A+","A-","B+","B-")).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            for(DocumentSnapshot d:list){
+                                                RequestModel obj = d.toObject(RequestModel.class);
+                                                requestsData.add(obj);
+                                            }
+                                            requestAdapter.notifyDataSetChanged();//update adapter
                                         }
-                                        requestAdapter.notifyDataSetChanged();//update adapter
-                                    }
-                                });
-                        break;
-                    case "A+":
-                        db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","A+")).get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot d:list){
-                                            RequestModel obj = d.toObject(RequestModel.class);
-                                            requestsData.add(obj);
+                                    });
+                            break;
+                        case "A+":
+                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","A+")).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            for(DocumentSnapshot d:list){
+                                                RequestModel obj = d.toObject(RequestModel.class);
+                                                requestsData.add(obj);
+                                            }
+                                            requestAdapter.notifyDataSetChanged();//update adapter
                                         }
-                                        requestAdapter.notifyDataSetChanged();//update adapter
-                                    }
-                                });
-                        break;
-                    case "A-":
-                        db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","A+","A-")).get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot d:list){
-                                            RequestModel obj = d.toObject(RequestModel.class);
-                                            requestsData.add(obj);
+                                    });
+                            break;
+                        case "A-":
+                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","A+","A-")).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            for(DocumentSnapshot d:list){
+                                                RequestModel obj = d.toObject(RequestModel.class);
+                                                requestsData.add(obj);
+                                            }
+                                            requestAdapter.notifyDataSetChanged();//update adapter
                                         }
-                                        requestAdapter.notifyDataSetChanged();//update adapter
-                                    }
-                                });
-                        break;
-                    case "B+":
-                        db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","B+")).get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot d:list){
-                                            RequestModel obj = d.toObject(RequestModel.class);
-                                            requestsData.add(obj);
+                                    });
+                            break;
+                        case "B+":
+                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","B+")).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            for(DocumentSnapshot d:list){
+                                                RequestModel obj = d.toObject(RequestModel.class);
+                                                requestsData.add(obj);
+                                            }
+                                            requestAdapter.notifyDataSetChanged();//update adapter
                                         }
-                                        requestAdapter.notifyDataSetChanged();//update adapter
-                                    }
-                                });
-                        break;
-                    case "B-":
-                        db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","B+","B-")).get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot d:list){
-                                            RequestModel obj = d.toObject(RequestModel.class);
-                                            requestsData.add(obj);
+                                    });
+                            break;
+                        case "B-":
+                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","B+","B-")).get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            for(DocumentSnapshot d:list){
+                                                RequestModel obj = d.toObject(RequestModel.class);
+                                                requestsData.add(obj);
+                                            }
+                                            requestAdapter.notifyDataSetChanged();//update adapter
                                         }
-                                        requestAdapter.notifyDataSetChanged();//update adapter
-                                    }
-                                });
-                        break;
+                                    });
+                            break;
+                    }
                 }
             }
         });

@@ -17,46 +17,47 @@
         android:text="Enter the following details :"
         android:layout_marginHorizontal="30dp"
         android:textColor="#F44336"
-
         android:textSize="25sp"
         android:textStyle="bold" />
 -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginHorizontal="30dp"
         android:layout_marginVertical="10dp"
-        app:cardBackgroundColor="#F3EED9"
+        app:cardBackgroundColor="#F44336"
+        app:cardCornerRadius="10dp"
+        >
 
-        app:cardCornerRadius="30dp"
-        app:cardElevation="20dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
+
             <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BLOOD REQUEST"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/ic_baseline_blood_drop_24"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/cream"
 
-        android:textColor="#F44336"
-
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-
+                android:gravity="center"
+                android:text="BLOOD REQUEST"
+                android:textColor="#F3EED9"
+                android:textSize="24sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
+        android:layout_marginTop="20dp"
         app:cardBackgroundColor="#F3EED9"
-
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">
 
@@ -68,125 +69,129 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!--<TextView
+
+<!--Blood Group-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Contact Information :"
-                android:textColor="#F44336"
-                android:textSize="20sp"
-                android:textStyle="bold" />-->
-
-            <EditText
-                android:id="@+id/edtName"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:drawableStart="@drawable/ic_baseline_account_circle_24"
-                android:drawablePadding="8dp"
+                android:id="@+id/tilName"
+                app:errorEnabled="true"
                 android:hint="Name"
-                android:inputType="text"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-            <!--Email Entry Field-->
-            <EditText
-                android:id="@+id/edtPhoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:drawableStart="@drawable/ic_baseline_phone_24"
-                android:drawablePadding="8dp"
-                android:hint="Phone Number"
-                android:inputType="phone"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                app:startIconDrawable="@drawable/ic_baseline_account_circle_24"
+                app:startIconTint="@color/red">
 
-            <EditText
-                android:id="@+id/edtLocation"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:drawableStart="@drawable/ic_baseline_location_24"
-                android:drawablePadding="8dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tilPhoneNumber"
+                app:errorEnabled="true"
+                android:hint="Phone Number"
+                app:startIconDrawable="@drawable/ic_baseline_phone_24"
+                app:startIconTint="@color/red">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilLocation"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
                 android:hint="Location"
                 android:inputType="textAutoComplete"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-
-        app:cardBackgroundColor="#F3EED9"
-
-        app:cardCornerRadius="30dp"
-        app:cardElevation="20dp">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-
-<!--            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Blood Detail :"
-
-                android:textColor="#F44336"
-
-                android:textSize="20sp"
-                android:textStyle="bold" />-->
-            <EditText
-                android:id="@+id/edtBloodType"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="2dp"
-                android:drawableStart="@drawable/ic_baseline_bloodtype_24"
-                android:drawablePadding="8dp"
-                android:hint="Blood Type"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/edtUrgency"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="2dp"
-                android:drawableStart="@drawable/ic_baseline_alarm_24"
-                android:drawablePadding="8dp"
-                android:hint="Urgency"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/edtNote"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:drawableStart="@drawable/ic_baseline_edit_note_24"
-                android:drawablePadding="8dp"
-                android:hint="Note (optional)"
-                android:padding="8dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:inputType="textMultiLine"/>
+                app:startIconDrawable="@drawable/ic_baseline_location_24"
+                app:startIconTint="@color/red">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:focusableInTouchMode="false"
+                    android:id="@+id/actvLocation"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Blood Group-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Blood Type"
+                app:errorEnabled="true"
+                android:id="@+id/tilBloodType"
+                app:startIconDrawable="@drawable/ic_baseline_bloodtype_24"
+                app:startIconScaleType="center"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                app:startIconTint="@color/red">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/actvBloodGroup"
+                    android:inputType="none"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+<!--Urgency
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tilUrgency"
+                app:errorEnabled="true"
+                app:startIconDrawable="@drawable/ic_baseline_alarm_24"
+                app:startIconTint="@color/red">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Urgency"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tilNote"
+                app:startIconDrawable="@drawable/ic_baseline_edit_note_24"
+                app:startIconTint="@color/red"
+                android:hint="Note (optional)"
+                android:textColor="@color/black"
+                app:errorEnabled="true"
+                android:textSize="14sp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Button
                 android:id="@+id/btnRequestBlood"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginTop="10dp"
                 android:text="Request Blood"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                app:cornerRadius="20dp" />
+                app:cornerRadius="60dp"
+                android:elevation="30dp"/>
 
 
 

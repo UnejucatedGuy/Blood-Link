@@ -37,18 +37,40 @@ public class FirebaseService extends FirebaseMessagingService {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent intent1 = PendingIntent.getActivities(this,0,new Intent[]{intent},PendingIntent.FLAG_ONE_SHOT);
-        Notification notification;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent intent1 = PendingIntent.getActivities(this, 0, new Intent[]{intent}, PendingIntent.FLAG_MUTABLE);
+            Notification notification;
+            notification = new NotificationCompat.Builder(this,CHANNEL_ID)
+                    .setContentTitle(remoteMessage.getData().get("title"))
+                    .setContentText(remoteMessage.getData().get("message"))
+                    .setSmallIcon(R.drawable.ic_baseline_blood_drop_24)
+                    .setAutoCancel(true)
+                    .setContentIntent(intent1)
+                    .build();
 
-        notification = new NotificationCompat.Builder(this,CHANNEL_ID)
-                .setContentTitle(remoteMessage.getData().get("title"))
-                .setContentText(remoteMessage.getData().get("message"))
-                .setSmallIcon(R.drawable.ic_baseline_blood_drop_24)
-                .setAutoCancel(true)
-                .setContentIntent(intent1)
-                .build();
+            manager.notify(notificationId,notification);
+        }
+        else{
+            PendingIntent intent1 = PendingIntent.getActivities(this,0,new Intent[]{intent},PendingIntent.FLAG_ONE_SHOT);
+            Notification notification;
+            notification = new NotificationCompat.Builder(this,CHANNEL_ID)
+                    .setContentTitle(remoteMessage.getData().get("title"))
+                    .setContentText(remoteMessage.getData().get("message"))
+                    .setSmallIcon(R.drawable.ic_baseline_blood_drop_24)
+                    .setAutoCancel(true)
+                    .setContentIntent(intent1)
+                    .build();
 
-        manager.notify(notificationId,notification);
+            manager.notify(notificationId,notification);
+        }
+
+
+
+
+
+
+
+
 
     }
 
