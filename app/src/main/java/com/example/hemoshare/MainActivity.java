@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         btnProfile.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,ProfileActivity.class)));
 
         btnNewProfile.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this,NewProfileActivity.class));
+            startActivity(new Intent(MainActivity.this,RequestsActivity.class));
             //
             // startActivity(new Intent(MainActivity.this,RequestsActivity.class));//test
         });

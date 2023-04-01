@@ -101,6 +101,9 @@ public class SelectLocationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("address", selectedAddress);
+                resultIntent.putExtra("lat",selectedLat);
+                resultIntent.putExtra("lng",selectedLng);
+
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }
@@ -136,6 +139,8 @@ public class SelectLocationActivity extends AppCompatActivity {
                                 }
                                 if (addressList != null) {
                                     String mAddress = addressList.get(0).getAddressLine(0);
+                                    selectedLat = latLng.latitude;
+                                    selectedLng = latLng.longitude;
                                     selectedAddress = mAddress;
                                     actvLocation.setText(selectedAddress);
 
@@ -153,7 +158,6 @@ public class SelectLocationActivity extends AppCompatActivity {
                                     if (networkInfo.isConnected() && networkInfo.isAvailable()) {
                                         selectedLat = latLng.latitude;
                                         selectedLng = latLng.longitude;
-
                                         getAddress(selectedLat, selectedLng);
                                         actvLocation.setText(selectedAddress);
                                     } else {

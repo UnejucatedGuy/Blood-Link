@@ -38,7 +38,7 @@ public class RequestsActivity extends AppCompatActivity {
         rcvRequests = findViewById(R.id.rcvRequests);
         requestsData=new ArrayList<>();
         rcvRequests.setLayoutManager(new LinearLayoutManager(this));
-        requestAdapter = new RequestAdapter(requestsData);
+        requestAdapter = new RequestAdapter(requestsData,RequestsActivity.this);
         rcvRequests.setAdapter(requestAdapter);
 
 

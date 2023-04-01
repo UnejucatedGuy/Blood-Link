@@ -27,6 +27,7 @@ import com.example.hemoshare.Model.Constants;
 import com.example.hemoshare.Model.NotificationData;
 import com.example.hemoshare.Model.PushNotification;
 import com.example.hemoshare.api.ApiUtilities;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -61,6 +62,7 @@ public class RequestBloodActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
 
     String name,phoneNo,location,bloodType,urgency,note,time,userID;
+    double selectedLat,selectedLng;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
@@ -119,10 +121,12 @@ public class RequestBloodActivity extends AppCompatActivity {
         if(requestCode == 1){
             if(resultCode==RESULT_OK){
                 String result = data.getStringExtra("address");
+                selectedLat = data.getDoubleExtra("lat",0);
+                selectedLng = data.getDoubleExtra("lng",0);
                 actvLocation.setText(result);
             }
             if(resultCode==RESULT_CANCELED){
-
+                Toast.makeText(this, "Please selact a Location on Map", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -172,6 +176,8 @@ public class RequestBloodActivity extends AppCompatActivity {
         }
         else
         {
+            DocumentReference documentReference = db.collection("requests").document();
+            String requestId = documentReference.getId();
             Map<String, Object> request = new HashMap<>();
             request.put("name", name);
             request.put("phoneNo",phoneNo);
@@ -180,9 +186,12 @@ public class RequestBloodActivity extends AppCompatActivity {
             //request.put("urgency",urgency);
             request.put("note",note);
             request.put("time",time);
+            request.put("requestId",requestId);
+            request.put("requestLat",selectedLat);
+            request.put("requestLng",selectedLng);
 
             //Saving in Firebase Database
-            DocumentReference documentReference = db.collection("requests").document();
+
             documentReference.set(request).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {

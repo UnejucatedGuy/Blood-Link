@@ -2,19 +2,28 @@ package com.example.hemoshare;
 
 public class RequestModel {
 
-   String bloodType,name,time;
+   String bloodType,name,time,requestId;
 
 
     public RequestModel() {
         super();
     }
 
-    public RequestModel(String bloodType, String name, String time) {
+    public RequestModel(String bloodType, String name, String time,String requestId) {
         this.bloodType = bloodType;
         this.name = name;
         this.time = time;
+        this.requestId = requestId;
+
     }
 
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
 
     public String getBloodType() {
         return bloodType;
