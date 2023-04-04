@@ -92,7 +92,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tvBloodType"
+                    android:id="@+id/tvBloodGroup"
                     android:text="AB +ve"
                     android:drawablePadding="5dp"
                     android:textColor="@color/black"

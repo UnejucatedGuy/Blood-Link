@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RequestDetailsActivity">
-
-    <fragment
-        android:id="@+id/google_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+    android:gravity="center"
+    tools:context=".RequestAcceptedReceiverActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="30dp"
         android:backgroundTint="@color/cream"
@@ -27,10 +20,10 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:padding="5dp"
+            android:layout_margin="5dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
@@ -40,42 +33,22 @@
                 android:padding="10dp"
                 android:weightSum="5">
 
+
+
+
                 <com.google.android.material.textview.MaterialTextView
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Om Parab"
-                    android:id="@+id/txvName"
+                    android:textAlignment="center"
+                    android:text="Your request is accepted by"
                     android:textSize="16sp"
+
                     android:textStyle="bold" />
-
-                <com.google.android.material.textview.MaterialTextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Needs "
-
-                    android:textSize="14sp" />
-
-                <com.google.android.material.textview.MaterialTextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="AB+"
-                    android:id="@+id/txvBloodGroup"
-                    android:textColor="@color/red"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.textview.MaterialTextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Blood"
-
-                    android:textSize="14sp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -86,7 +59,7 @@
 
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:gravity="center"
@@ -94,9 +67,47 @@
 
                     <com.google.android.material.textview.MaterialTextView
 
+                        android:id="@+id/txvDonorName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/txvPhoneNumber"
+                        android:layout_margin="10dp"
+                        android:drawableStart="@drawable/ic_baseline_account_circle_24"
+                        android:drawablePadding="5dp"
+                        android:gravity="center_vertical"
+                        android:text="oioi"
+                        android:textSize="14sp" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVisitProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="Visit Profile"
+                    android:textSize="14sp"
+                    app:icon="@drawable/ic_baseline_account_circle_24" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+<androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+
+                        android:id="@+id/txvDonorPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:drawableStart="@drawable/ic_baseline_phone_24"
                         android:drawablePadding="5dp"
@@ -106,11 +117,10 @@
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btnCall"
 
                     android:text="Call"
                     android:textSize="14sp"
@@ -118,54 +128,34 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <com.google.android.material.textview.MaterialTextView
-
+            <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txvAddress"
-                android:layout_margin="10dp"
-                android:drawableStart="@drawable/ic_baseline_location_24"
-                android:drawablePadding="5dp"
-                android:maxHeight="90dp"
-                android:text="hellod this is my addressdfjfjkjfkdjfkjfkjfkdjjdfkdjfkjkfjkjdfjfkj"
-                android:textSize="14sp" />
+                android:layout_margin="10dp"/>
+
 
             <com.google.android.material.textview.MaterialTextView
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txvNote"
-                android:layout_margin="10dp"
-                android:drawableStart="@drawable/ic_baseline_edit_note_24"
-                android:drawablePadding="5dp"
+                android:layout_margin="5dp"
                 android:maxHeight="90dp"
-                android:text="hellod this is my addressdfjfjkjfkdjfkjfkjfkdjjdfkdjfkjkfjkjdfjfkj"
-                android:textSize="14sp" />
-            <androidx.appcompat.widget.LinearLayoutCompat
+                android:text="After successful blood donation give the following code to the donor"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+            <com.google.android.material.textview.MaterialTextView
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnDeclineRequest"
-                    android:layout_marginVertical="10dp"
-                    android:padding="10dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:text="DECLINE"
-                    android:textSize="14sp" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnAcceptRequest"
-                    android:layout_marginVertical="10dp"
-                    android:backgroundTint="#4CAF50"
-                    android:padding="10dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:text="ACCEPT"
-                    android:textSize="14sp" />
+                android:id="@+id/txvCode"
+                android:layout_margin="5dp"
+                android:maxHeight="90dp"
+                android:text="123456"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="30sp" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -173,4 +163,4 @@
     </androidx.cardview.widget.CardView>
 
 
-</RelativeLayout>
+</LinearLayout>

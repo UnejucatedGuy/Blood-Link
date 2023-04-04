@@ -24,11 +24,11 @@ import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView tvProfileName,tvAge,tvBloodType,tvGender,tvName,tvEmail,tvPhoneNo,tvCity,tvDonationCount,tvDonorRatings;
+    TextView tvProfileName,tvAge, tvBloodGroup,tvGender,tvName,tvEmail,tvPhoneNo,tvCity,tvDonationCount,tvDonorRatings;
     Button btnEditProfile;
     ImageView imgProfile;
 
-    String name,age,bloodType,gender,email,phoneNo,city,userID;
+    String name,age, bloodGroup,gender,email,phoneNo,city,userID;
     Uri profileImgUri;
 
     FirebaseFirestore db;
@@ -43,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         //Binding UI
         tvProfileName = findViewById(R.id.tvProfileName);
         tvAge = findViewById(R.id.tvAge);
-        tvBloodType = findViewById(R.id.tvBloodType);
+        tvBloodGroup = findViewById(R.id.tvBloodGroup);
         tvGender = findViewById(R.id.tvGender);
         tvName = findViewById(R.id.tvName);
         tvEmail = findViewById(R.id.tvEmail);
@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 name = value.getString("name");
                 //age = String.valueOf(calculateAge((Integer) value.get("birthYear")));
-                bloodType = value.getString("bloodType");
+                bloodGroup = value.getString("bloodGroup");
                 gender = value.getString("gender");
                 email = value.getString("email");
                 phoneNo = value.getString("phoneNo");
@@ -81,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
                 //updateUi
                 tvProfileName.setText(name);
                 //tvAge.setText(age);
-                tvBloodType.setText(bloodType);
+                tvBloodGroup.setText(bloodGroup);
                 tvGender.setText(gender);
                 tvName.setText(name);
                 tvEmail.setText(email);

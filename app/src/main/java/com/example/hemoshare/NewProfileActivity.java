@@ -25,7 +25,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -41,7 +40,7 @@ public class NewProfileActivity extends AppCompatActivity {
 
     Button btnSave,btnImgSelect;
 
-    String name,email,phoneNo,city,gender,bloodType,userID;
+    String name,email,phoneNo,city,gender, bloodGroup,userID;
     Uri profileImgUri;
     int birthDay,birthMonth,birthYear;
 
@@ -101,9 +100,9 @@ public class NewProfileActivity extends AppCompatActivity {
 
     }
 
-   /* public void assignBloodGroups(String bloodType) {
+   /* public void assignBloodGroups(String bloodGroup) {
         unsubscribeAllTopics();
-        switch (bloodType){
+        switch (bloodGroup){
             case "AB+" :
                 FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
                 return;
@@ -179,7 +178,7 @@ public class NewProfileActivity extends AppCompatActivity {
         phoneNo = edtPhoneNumber.getText().toString();
         city = edtCity.getText().toString();
         gender = edtGender.getText().toString();
-        bloodType = edtBloodGroup.getText().toString();
+        bloodGroup = edtBloodGroup.getText().toString();
 
         Map<String, Object> user = new HashMap<>();
         user.put("name", name);
@@ -187,7 +186,7 @@ public class NewProfileActivity extends AppCompatActivity {
         user.put("phoneNo", phoneNo);
         user.put("city", city);
         user.put("gender", gender);
-        user.put("bloodType", bloodType);
+        user.put("bloodGroup", bloodGroup);
         user.put("birthDay", birthDay);
         user.put("birthMonth", birthMonth);
         user.put("birthYear", birthYear);
@@ -200,7 +199,7 @@ public class NewProfileActivity extends AppCompatActivity {
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Constants.assignBloodGroups(bloodType);
+                Constants.assignBloodGroups(bloodGroup);
                 Toast.makeText(NewProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(NewProfileActivity.this,MainActivity.class));
             }

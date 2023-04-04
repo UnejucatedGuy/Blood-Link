@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.hemoshare.MainActivity;
 import com.example.hemoshare.R;
+import com.example.hemoshare.RequestDetailsActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -27,7 +28,8 @@ public class FirebaseService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Intent intent = new Intent(this, MainActivity.class);//this open when clicked on notification
+        Intent intent = new Intent(this, RequestDetailsActivity.class);//this open when clicked on notification
+        intent.putExtra("requestId",remoteMessage.getData().get("requestId"));
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationId = new Random().nextInt();
 

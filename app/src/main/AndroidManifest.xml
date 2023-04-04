@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,6 +19,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HemoShare"
         tools:targetApi="31">
+        <activity
+            android:name=".DonationCompleteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CongratsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RequestAcceptedReceiverActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RequestAcceptedUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WaitingToAcceptActivity"
+            android:exported="false" />
         <activity
             android:name=".RequestDetailsActivity"
             android:exported="false" />

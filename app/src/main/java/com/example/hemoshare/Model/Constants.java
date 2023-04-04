@@ -29,7 +29,7 @@ public class Constants {
 
 
 
-    public static void assignBloodGroups(@NonNull String bloodType) {
+    public static void assignBloodGroups(@NonNull String bloodGroup) {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(AB_POS);
         FirebaseMessaging.getInstance().unsubscribeFromTopic(AB_NEG);
         FirebaseMessaging.getInstance().unsubscribeFromTopic(O_POS);
@@ -38,7 +38,7 @@ public class Constants {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(A_NEG);
         FirebaseMessaging.getInstance().unsubscribeFromTopic(B_POS);
         FirebaseMessaging.getInstance().unsubscribeFromTopic(B_NEG);
-        switch (bloodType) {
+        switch (bloodGroup) {
             case "AB+":
                 FirebaseMessaging.getInstance().subscribeToTopic(AB_POS);
                 break;

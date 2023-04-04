@@ -3,11 +3,22 @@ package com.example.hemoshare.Model;
 public class NotificationData {
     private String title;
     private String message;
+    private String requestId;
 
 
-    public NotificationData(String title, String message) {
+    public NotificationData(String title, String message,String requestId) {
         this.title = title;
         this.message = message;
+        this.requestId = requestId;
+
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 
     public String getTitle() {

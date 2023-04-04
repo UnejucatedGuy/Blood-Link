@@ -31,7 +31,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
-        holder.txvBloodGroup.setText(requestData.get(position).getBloodType());
+        holder.txvBloodGroup.setText(requestData.get(position).getBloodGroup());
         holder.txvName.setText(requestData.get(position).getName());
         holder.txvTime.setText(requestData.get(position).getTime());
      }

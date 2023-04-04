@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -39,22 +41,26 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class RequestDetailsActivity extends AppCompatActivity {
-    String requestId, name, bloodGroup, phoneNumber, address, note;
+    String requestId, name, bloodGroup, phoneNumber, address, note,userId,donorName,donorPhoneNumber;
     LatLng requestLatlng;
     List<Address> addressList;
     Marker marker;
     GoogleMap mMap;
     MaterialTextView txvName, txvBloodGroup, txvAddress, txvNote, txvPhoneNumber;
-    MaterialButton btnCall, btnAcceptRequest;
+    Button btnCall, btnAcceptRequest,btnDeclineRequest;
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
 
     //Firebase
     FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    DocumentReference documentReference;
 
 
     @SuppressLint("WrongViewCast")
@@ -76,10 +82,16 @@ public class RequestDetailsActivity extends AppCompatActivity {
         txvNote = findViewById(R.id.txvNote);
         btnCall = findViewById(R.id.btnCall);
         btnAcceptRequest = findViewById(R.id.btnAcceptRequest);
+        btnDeclineRequest = findViewById(R.id.btnDeclineRequest);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //Firebase
+        mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        userId = mAuth.getCurrentUser().getUid();
+
+
+
         getRequestData();
 
         //Click Listners
@@ -94,11 +106,37 @@ public class RequestDetailsActivity extends AppCompatActivity {
         btnAcceptRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + String.valueOf(requestLatlng.latitude) + "," + String.valueOf(requestLatlng.longitude) + "&mode=l"));
-                intent.setPackage("com.google.android.apps.maps");
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
+                documentReference = db.collection("users").document(userId);
+                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        donorName = value.getString("name");
+                        donorPhoneNumber = value.getString("phoneNo");
+
+                        Map<String, Object> request = new HashMap<>();
+                        request.put("donorId", userId);
+                        request.put("donorName", donorName);
+                        request.put("donorPhoneNumber",donorPhoneNumber);
+                        request.put("isAccepted",true);
+                        db.collection("requests").document(requestId).update(request);
+
+                        Intent intent = new Intent(RequestDetailsActivity.this,RequestAcceptedUserActivity.class);
+                        intent.putExtra("requestId",requestId);
+                        intent.putExtra("name",name);
+                        intent.putExtra("phoneNumber",phoneNumber);
+                        intent.putExtra("address",address);
+                        intent.putExtra("note",note);
+                        intent.putExtra("requestLat", requestLatlng.latitude);
+                        intent.putExtra("requestLng", requestLatlng.longitude);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+
+
+
+
             }
         });
     }
@@ -131,7 +169,7 @@ public class RequestDetailsActivity extends AppCompatActivity {
                 name = value.getString("name");
                 phoneNumber = value.getString("phoneNo");
                 address = value.getString("location");
-                bloodGroup = value.getString("bloodType");
+                bloodGroup = value.getString("bloodGroup");
                 note = value.getString("note");
                 requestLatlng = new LatLng((Double) value.get("requestLat"), (Double) value.get("requestLng"));
                 updateUI();

@@ -51,12 +51,12 @@ public class RequestsActivity extends AppCompatActivity {
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String bloodGroup = value.getString("bloodType");
+                String bloodGroup = value.getString("bloodGroup");
                 if (bloodGroup != null) {
                     switch(bloodGroup)
                     {
                         case "AB+":
-                            db.collection("requests").whereIn("bloodType", Arrays.asList("AB+")).get()
+                            db.collection("requests").whereIn("bloodGroup", Arrays.asList("AB+")).get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -70,7 +70,7 @@ public class RequestsActivity extends AppCompatActivity {
                                     });
                             break;
                         case "AB-":
-                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-")).get()
+                            db.collection("requests").whereIn("bloodGroup",Arrays.asList("AB+","AB-")).get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -84,7 +84,7 @@ public class RequestsActivity extends AppCompatActivity {
                                     });
                             break;
                         case "O+":
-                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","O+","A+","B+")).get()
+                            db.collection("requests").whereIn("bloodGroup",Arrays.asList("AB+","O+","A+","B+")).get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -98,7 +98,7 @@ public class RequestsActivity extends AppCompatActivity {
                                     });
                             break;
                         case "O-":
-                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","O+","O-","A+","A-","B+","B-")).get()
+                            db.collection("requests").whereIn("bloodGroup",Arrays.asList("AB+","AB-","O+","O-","A+","A-","B+","B-")).get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -112,7 +112,7 @@ public class RequestsActivity extends AppCompatActivity {
                                     });
                             break;
                         case "A+":
-                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","A+")).get()
+                            db.collection("requests").whereIn("bloodGroup",Arrays.asList("AB+","A+")).get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -126,7 +126,7 @@ public class RequestsActivity extends AppCompatActivity {
                                     });
                             break;
                         case "A-":
-                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","A+","A-")).get()
+                            db.collection("requests").whereIn("bloodGroup",Arrays.asList("AB+","AB-","A+","A-")).get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -140,7 +140,7 @@ public class RequestsActivity extends AppCompatActivity {
                                     });
                             break;
                         case "B+":
-                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","B+")).get()
+                            db.collection("requests").whereIn("bloodGroup",Arrays.asList("AB+","B+")).get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -154,7 +154,7 @@ public class RequestsActivity extends AppCompatActivity {
                                     });
                             break;
                         case "B-":
-                            db.collection("requests").whereIn("bloodType",Arrays.asList("AB+","AB-","B+","B-")).get()
+                            db.collection("requests").whereIn("bloodGroup",Arrays.asList("AB+","AB-","B+","B-")).get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                         @Override
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

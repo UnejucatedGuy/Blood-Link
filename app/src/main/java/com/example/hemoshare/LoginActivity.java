@@ -111,8 +111,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 //assert value != null;
-                String bloodGroup = value.getString("bloodType");
+                String bloodGroup = value.getString("bloodGroup");
                 Constants.assignBloodGroups(bloodGroup);
+
             }
         });
 

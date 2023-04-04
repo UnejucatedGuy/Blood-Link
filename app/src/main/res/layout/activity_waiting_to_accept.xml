@@ -4,13 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RequestDetailsActivity">
-
-    <fragment
+    tools:context=".WaitingToAcceptActivity">
+   <!-- <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="These are nearby BLOOD BANKS"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"/>-->
+    <!--<fragment
         android:id="@+id/google_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
 
 
     <androidx.cardview.widget.CardView
@@ -44,18 +51,9 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Om Parab"
-                    android:id="@+id/txvName"
+                    android:text="You requested for "
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <com.google.android.material.textview.MaterialTextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Needs "
-
-                    android:textSize="14sp" />
 
                 <com.google.android.material.textview.MaterialTextView
 
@@ -78,45 +76,8 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center">
 
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.textview.MaterialTextView
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txvPhoneNumber"
-                        android:layout_margin="10dp"
-                        android:drawableStart="@drawable/ic_baseline_phone_24"
-                        android:drawablePadding="5dp"
-                        android:gravity="center_vertical"
-                        android:text="9432394735"
-                        android:textSize="14sp" />
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnCall"
-
-                    android:text="Call"
-                    android:textSize="14sp"
-                    app:icon="@drawable/ic_baseline_phone_24" />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.textview.MaterialTextView
 
@@ -136,41 +97,32 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txvNote"
                 android:layout_margin="10dp"
-                android:drawableStart="@drawable/ic_baseline_edit_note_24"
+                android:textAlignment="center"
                 android:drawablePadding="5dp"
                 android:maxHeight="90dp"
-                android:text="hellod this is my addressdfjfjkjfkdjfkjfkjfkdjjdfkdjfkjkfjkjdfjfkj"
+                android:textStyle="bold"
+                android:text="Your Request is sent to nearby Donors\nYou will Receive a notification when someone accepts your request"
                 android:textSize="14sp" />
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btnDeclineRequest"
+                    android:id="@+id/btnDeleteRequest"
                     android:layout_marginVertical="10dp"
+                    android:drawableLeft="@drawable/baseline_close_24"
+                    android:drawableTint="@color/cream"
                     android:padding="10dp"
                     android:layout_marginHorizontal="20dp"
-                    android:text="DECLINE"
-                    android:textSize="14sp" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnAcceptRequest"
-                    android:layout_marginVertical="10dp"
-                    android:backgroundTint="#4CAF50"
-                    android:padding="10dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:text="ACCEPT"
+                    android:text="DELETE REQUEST"
                     android:textSize="14sp" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.cardview.widget.CardView>
+
 
 
 </RelativeLayout>

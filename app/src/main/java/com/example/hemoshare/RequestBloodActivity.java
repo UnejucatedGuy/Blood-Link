@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -27,7 +26,6 @@ import com.example.hemoshare.Model.Constants;
 import com.example.hemoshare.Model.NotificationData;
 import com.example.hemoshare.Model.PushNotification;
 import com.example.hemoshare.api.ApiUtilities;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,22 +52,20 @@ import retrofit2.Response;
 public class RequestBloodActivity extends AppCompatActivity {
 
 
-    TextInputLayout tilName,tilPhoneNo,tilLocation ,tilBloodGroup,tilNote;
-    AutoCompleteTextView actvBloodGroup,actvLocation;
+    TextInputLayout tilName, tilPhoneNo, tilLocation, tilBloodGroup, tilNote;
+    AutoCompleteTextView actvBloodGroup, actvLocation;
     Button btnRequestBlood;
-    String[] bloodGroups = new String[]{"AB+","AB-","O+","O-","A+","A-","B+","B-"};
-    String TOPIC = AB_POS
-            ;
+    String[] bloodGroups = new String[]{"AB+", "AB-", "O+", "O-", "A+", "A-", "B+", "B-"};
+    String TOPIC = AB_POS;
     ArrayAdapter<String> arrayAdapter;
 
-    String name,phoneNo,location,bloodType,urgency,note,time,userID;
-    double selectedLat,selectedLng;
+    String name, phoneNo, location, bloodGroup, urgency, note, time, userID, requestId, code;
+    double selectedLat, selectedLng;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
 
     DateFormat formatter = new SimpleDateFormat("h:mm a");
-
 
 
     @Override
@@ -82,12 +79,11 @@ public class RequestBloodActivity extends AppCompatActivity {
         tilLocation = findViewById(R.id.tilLocation);
         actvBloodGroup = findViewById(R.id.actvBloodGroup);
         actvLocation = findViewById(R.id.actvLocation);
-        tilBloodGroup = findViewById(R.id.tilBloodType);
+        tilBloodGroup = findViewById(R.id.tilBloodGroup);
         tilNote = findViewById(R.id.tilNote);
         btnRequestBlood = findViewById(R.id.btnRequestBlood);
-        arrayAdapter = new ArrayAdapter<>(this,R.layout.item_blood_group,bloodGroups);
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.item_blood_group, bloodGroups);
         actvBloodGroup.setAdapter(arrayAdapter);
-
 
 
         //Firebase
@@ -107,7 +103,7 @@ public class RequestBloodActivity extends AppCompatActivity {
         actvLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(RequestBloodActivity.this,SelectLocationActivity.class),1);
+                startActivityForResult(new Intent(RequestBloodActivity.this, SelectLocationActivity.class), 1);
 
             }
         });
@@ -118,14 +114,14 @@ public class RequestBloodActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1){
-            if(resultCode==RESULT_OK){
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 String result = data.getStringExtra("address");
-                selectedLat = data.getDoubleExtra("lat",0);
-                selectedLng = data.getDoubleExtra("lng",0);
+                selectedLat = data.getDoubleExtra("lat", 0);
+                selectedLng = data.getDoubleExtra("lng", 0);
                 actvLocation.setText(result);
             }
-            if(resultCode==RESULT_CANCELED){
+            if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Please selact a Location on Map", Toast.LENGTH_SHORT).show();
             }
         }
@@ -135,10 +131,10 @@ public class RequestBloodActivity extends AppCompatActivity {
         ApiUtilities.getClient().sendNotification(notification).enqueue(new Callback<PushNotification>() {
             @Override
             public void onResponse(Call<PushNotification> call, Response<PushNotification> response) {
-                if(response.isSuccessful())
+                if (response.isSuccessful())
                     Toast.makeText(RequestBloodActivity.this, "Notification Send To Users", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(RequestBloodActivity.this,"error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RequestBloodActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -153,42 +149,45 @@ public class RequestBloodActivity extends AppCompatActivity {
     private void saveRequest() {
         name = tilName.getEditText().getText().toString();
         phoneNo = tilPhoneNo.getEditText().getText().toString();
-        location =tilLocation.getEditText().getText().toString();
-        bloodType = actvBloodGroup.getText().toString();
+        location = tilLocation.getEditText().getText().toString();
+        bloodGroup = actvBloodGroup.getText().toString();
         note = tilNote.getEditText().getText().toString();
         time = formatter.format(new Date());
 
-        if (TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
             tilName.setError("Please enter a name ");
             tilName.requestFocus();
-        }
-        else if (TextUtils.isEmpty(phoneNo)){
+        } else if (TextUtils.isEmpty(phoneNo)) {
             tilPhoneNo.setError("Please Enter a Password");
             tilPhoneNo.requestFocus();
-        }
-        else if (TextUtils.isEmpty(location)){
+        } else if (TextUtils.isEmpty(location)) {
             tilLocation.setError("Please select a Location");
             tilLocation.requestFocus();
-        }
-        else if (TextUtils.isEmpty(bloodType)){
+        } else if (TextUtils.isEmpty(bloodGroup)) {
             tilBloodGroup.setError("Please Enter a Password");
             tilBloodGroup.requestFocus();
-        }
-        else
-        {
+        } else {
+            generateCode();
             DocumentReference documentReference = db.collection("requests").document();
-            String requestId = documentReference.getId();
+            requestId = documentReference.getId();
             Map<String, Object> request = new HashMap<>();
             request.put("name", name);
-            request.put("phoneNo",phoneNo);
-            request.put("location",location);
-            request.put("bloodType",bloodType);
+            request.put("donorId", "");
+            request.put("donorName", "");
+            request.put("donorPhoneNumber", "");
+            request.put("phoneNo", phoneNo);
+            request.put("location", location);
+            request.put("bloodGroup", bloodGroup);
             //request.put("urgency",urgency);
-            request.put("note",note);
-            request.put("time",time);
-            request.put("requestId",requestId);
-            request.put("requestLat",selectedLat);
-            request.put("requestLng",selectedLng);
+            request.put("note", note);
+            request.put("time", time);
+            request.put("requestId", requestId);
+            request.put("requestLat", selectedLat);
+            request.put("requestLng", selectedLng);
+            request.put("isAccepted", false);
+            request.put("isCompleted", false);
+            request.put("code", code);
+
 
             //Saving in Firebase Database
 
@@ -197,29 +196,29 @@ public class RequestBloodActivity extends AppCompatActivity {
                 public void onSuccess(Void unused) {
 
 
-                    switch (bloodType){
-                        case "AB+" :
+                    switch (bloodGroup) {
+                        case "AB+":
                             TOPIC = AB_POS;
                             break;
-                        case "AB-" :
+                        case "AB-":
                             TOPIC = AB_NEG;
                             break;
-                        case "O+" :
+                        case "O+":
                             TOPIC = O_POS;
                             break;
-                        case "O-" :
+                        case "O-":
                             TOPIC = O_NEG;
                             break;
-                        case "A+" :
+                        case "A+":
                             TOPIC = A_POS;
                             break;
-                        case "A-" :
+                        case "A-":
                             TOPIC = A_NEG;
                             break;
-                        case "B+" :
+                        case "B+":
                             TOPIC = B_POS;
                             break;
-                        case "B-" :
+                        case "B-":
                             TOPIC = B_NEG;
                             break;
                     }
@@ -228,7 +227,7 @@ public class RequestBloodActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             //Sending Notification
-                            PushNotification notification = new PushNotification(new NotificationData("Blood Requirement in your Area",name +" needs "+bloodType+" Blood" ),TOPIC);
+                            PushNotification notification = new PushNotification(new NotificationData("Blood Requirement in your Area", name + " needs " + bloodGroup + " Blood",requestId), TOPIC);
                             sendNotification(notification);
                             Toast.makeText(RequestBloodActivity.this, "Request Submitted Successfully", Toast.LENGTH_SHORT).show();
                             assignNotifications();
@@ -237,29 +236,35 @@ public class RequestBloodActivity extends AppCompatActivity {
                     });
 
 
-
-
-
                 }
             });
         }
- }
+    }
 
     private void assignNotifications() {
-            //assigning blood groups for notifications
+        //assigning blood groups for notifications
 
-            userID = mAuth.getCurrentUser().getUid();
-            DocumentReference documentReference = db.collection("users").document(userID);
-            documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                   String bloodGroup = value.getString("bloodType");
-                    Constants.assignBloodGroups(bloodGroup);
-                    Intent intent = new Intent(RequestBloodActivity.this,RequestsActivity.class);
-                    startActivity(intent);
-                }
-            });
+        userID = mAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = db.collection("users").document(userID);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                String userBloodGroup = value.getString("bloodGroup");
+                Constants.assignBloodGroups(userBloodGroup);
+            }
+        });
+        Intent intent = new Intent(RequestBloodActivity.this, WaitingToAcceptActivity.class);
+        intent.putExtra("requestId", requestId);
+        intent.putExtra("address", location);
+        intent.putExtra("bloodGroup", bloodGroup);
+        startActivity(intent);
+        finish();
+    }
 
-
-        }
+    private void generateCode() {
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+        // this will convert any number sequence into 6 character.
+        code = String.format("%06d", number);
+    }
 }

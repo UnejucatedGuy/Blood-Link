@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Blood Type"
                 app:errorEnabled="true"
-                android:id="@+id/tilBloodType"
+                android:id="@+id/tilBloodGroup"
                 app:startIconDrawable="@drawable/ic_baseline_bloodtype_24"
                 app:startIconScaleType="center"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"

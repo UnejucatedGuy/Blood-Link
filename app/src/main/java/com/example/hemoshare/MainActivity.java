@@ -11,6 +11,8 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.checkerframework.checker.units.qual.C;
+
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
@@ -37,9 +39,10 @@ public class MainActivity extends AppCompatActivity {
         btnProfile.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,ProfileActivity.class)));
 
         btnNewProfile.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this,RequestsActivity.class));
-            //
-            // startActivity(new Intent(MainActivity.this,RequestsActivity.class));//test
+            //startActivity(new Intent(MainActivity.this,NewProfileActivity.class));
+            Intent intent = new Intent(MainActivity.this, RequestsActivity.class);
+            startActivity(intent);//test
+
         });
 
         btnLogOut.setOnClickListener(v -> {
