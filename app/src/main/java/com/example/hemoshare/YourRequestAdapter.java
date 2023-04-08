@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestViewHolder>{
+public class YourRequestAdapter extends RecyclerView.Adapter<YourRequestAdapter.RequestViewHolder>{
 
-    static ArrayList<RequestModel> requestData;
+    static ArrayList<YourRequestModel> requestData;
     private static Context context;
 
-    public RequestAdapter(ArrayList<RequestModel> requestData,Context context) {
+    public YourRequestAdapter(ArrayList<YourRequestModel> requestData, Context context) {
         this.requestData = requestData;
         this.context = context;
     }
@@ -25,14 +25,13 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     @NonNull
     @Override
     public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcvitem_request,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcvitem_your_request,parent,false);
         return new RequestViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
         holder.txvBloodGroup.setText(requestData.get(position).getBloodGroup());
-        holder.txvName.setText(requestData.get(position).getName());
         holder.txvTime.setText(requestData.get(position).getTime());
      }
 
@@ -43,12 +42,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
     static class RequestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView txvBloodGroup,txvName,txvTime;
+        TextView txvBloodGroup,txvTime;
 
         public RequestViewHolder(@NonNull View itemView){
             super(itemView);
             txvBloodGroup = itemView.findViewById(R.id.txvBloodGroup);
-            txvName = itemView.findViewById(R.id.txvName);
             txvTime = itemView.findViewById(R.id.txvTime);
             itemView.setOnClickListener(this);
 
@@ -57,16 +55,15 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         @Override
         public void onClick(View v) {
             int position = this.getAdapterPosition();
-            RequestModel requestModel = requestData.get(position);
-            String requestId=requestModel.getRequestId();
+            YourRequestModel yourRequestModel = requestData.get(position);
+            String requestId=yourRequestModel.getRequestId();
 
             Intent intent;
-            if (requestModel.isAccepted()) {
-                intent = new Intent(context, RequestAcceptedUserActivity.class);
+            if (yourRequestModel.isAccepted()) {
+                intent = new Intent(context, RequestAcceptedReceiverActivity.class);
 
             } else {
-
-                intent = new Intent(context, RequestDetailsActivity.class);
+                intent = new Intent(context, WaitingToAcceptActivity.class);
             }
             intent.putExtra("requestId",requestId);
             context.startActivity(intent);

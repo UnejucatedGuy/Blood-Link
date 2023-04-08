@@ -1,19 +1,18 @@
 package com.example.hemoshare;
 
-public class RequestModel {
+public class YourRequestModel {
 
-   String bloodGroup,name,time,requestId;
+   String bloodGroup,time,requestId;
    boolean isAccepted;
 
 
 
-    public RequestModel() {
+    public YourRequestModel() {
         super();
     }
 
-    public RequestModel(String bloodGroup, String name, String time,String requestId,boolean isAccepted) {
+    public YourRequestModel(String bloodGroup, String time, String requestId, boolean isAccepted) {
         this.bloodGroup = bloodGroup;
-        this.name = name;
         this.time = time;
         this.requestId = requestId;
         this.isAccepted = isAccepted;
@@ -43,14 +42,6 @@ public class RequestModel {
 
     public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getTime() {

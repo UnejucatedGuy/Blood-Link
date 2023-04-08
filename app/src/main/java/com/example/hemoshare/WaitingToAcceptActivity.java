@@ -1,13 +1,14 @@
 package com.example.hemoshare;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,18 +36,31 @@ public class WaitingToAcceptActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         requestId = intent.getStringExtra("requestId");
-        bloodGroup = intent.getStringExtra("bloodGroup");
-        address = intent.getStringExtra("address");
+        /*bloodGroup = intent.getStringExtra("bloodGroup");
+        address = intent.getStringExtra("address");*/
+
+        db = FirebaseFirestore.getInstance();
+
+
 
         txvBloodGroup = findViewById(R.id.txvBloodGroup);
         txvAddress = findViewById(R.id.txvAddress);
         btnDeleteRequest = findViewById(R.id.btnDeleteRequest);
 
-        txvBloodGroup.setText(bloodGroup);
-        txvAddress.setText(address);
+        db.collection("requests").document(requestId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                bloodGroup = documentSnapshot.getString("bloodGroup");
+                address = documentSnapshot.getString("location");
+                txvBloodGroup.setText(bloodGroup);
+                txvAddress.setText(address);
+            }
+        });
+
+
 
         //Firebase
-        db = FirebaseFirestore.getInstance();
+
         documentReference = db.collection("requests").document(requestId);
 
         //click Listners

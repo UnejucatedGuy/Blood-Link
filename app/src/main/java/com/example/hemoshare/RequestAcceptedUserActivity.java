@@ -42,13 +42,13 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
 
         Intent intent = getIntent();
         requestId = intent.getStringExtra("requestId");
-        name = intent.getStringExtra("name");
+        /*name = intent.getStringExtra("name");
         phoneNumber = intent.getStringExtra("phoneNumber");
         address = intent.getStringExtra("address");
         note = intent.getStringExtra("note");
         requestLat = intent.getDoubleExtra("requestLat",0);
         requestLng = intent.getDoubleExtra("requestLng",0);
-        requestLatlng = new LatLng(requestLat,requestLng);
+        requestLatlng = new LatLng(requestLat,requestLng);*/
 
         //Firebase
         db = FirebaseFirestore.getInstance();
@@ -63,7 +63,22 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
         btnEnterCode = findViewById(R.id.btnEnterCode);
         btnGetDirections = findViewById(R.id.btnGetDirection);
 
-        updateUI();
+        db.collection("requests").document(requestId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                name = documentSnapshot.getString("name");
+                phoneNumber= documentSnapshot.getString("phoneNo");
+                address= documentSnapshot.getString("location");
+                note= documentSnapshot.getString("note");
+                requestLat= documentSnapshot.getDouble("requestLat");
+                requestLng= documentSnapshot.getDouble("requestLng");
+                requestLatlng = new LatLng(requestLat,requestLng);
+                updateUI();
+
+            }
+        });
+
+
 
         //click Listners
         btnCall.setOnClickListener(new View.OnClickListener() {
@@ -134,20 +149,25 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
 
             numberOfDonations = String.valueOf((Integer.parseInt(numberOfDonations))+1);
 
-            db.collection("users").document(userId).update("numberOfDonations",numberOfDonations);
-            db.collection("requests").document(requestId).update("isCompleted",true).addOnSuccessListener(new OnSuccessListener<Void>() {
+            db.collection("users").document(userId).update("numberOfDonations",numberOfDonations).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
-                    Intent intent = new Intent(RequestAcceptedUserActivity.this,CongratsActivity.class);
-                    intent.putExtra("numberOfDonations",numberOfDonations);
-                    startActivity(intent);
-                    finish();
+                    db.collection("requests").document(requestId).update("isCompleted",true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Intent intent = new Intent(RequestAcceptedUserActivity.this,CongratsActivity.class);
+                            intent.putExtra("numberOfDonations",numberOfDonations);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
                 }
             });
 
+
         }
         else{
-            Toast.makeText(this, numberOfDonations, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Incorrect Code" , Toast.LENGTH_SHORT).show();
         }
 
     }

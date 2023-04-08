@@ -1,102 +1,54 @@
 package com.example.hemoshare;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.tabs.TabLayout;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
-public class RequestsActivity extends AppCompatActivity {
-    /*RecyclerView rcvRequests;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
+public class NearbyRequestsFragment extends Fragment {
+
+    RecyclerView rcvRequests;
+    TextView txvEmptyView;
     ArrayList<RequestModel> requestsData;
     RequestAdapter requestAdapter;
     FirebaseFirestore db;
-    FirebaseAuth mAuth;*/
-
-    TabLayout tblRequests;
-    ViewPager2 vpViewPager;
-
-
-
+    FirebaseAuth mAuth;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requests);
-
-        tblRequests = findViewById(R.id.tblRequests);
-        vpViewPager = findViewById(R.id.vpViewPager);
-
-        tblRequests.addTab(tblRequests.newTab().setText("Nearby Requests"));
-        tblRequests.addTab(tblRequests.newTab().setText("Your Requests"));
-
-        vpViewPager.setAdapter(new FragmentStateAdapter(this) {
-            @Override
-            public int getItemCount() {
-                return tblRequests.getTabCount();
-            }
-
-            @NonNull
-            @Override
-            public Fragment createFragment(int position) {
-                switch (position) {
-                    case 0:
-                        NearbyRequestsFragment nearbyRequestsFragment = new NearbyRequestsFragment();
-                        return nearbyRequestsFragment;
-
-                    case 1:
-                        YourRequestsFragment yourRequestsFragment = new YourRequestsFragment();
-                        return yourRequestsFragment;
-
-                    default:
-                        return null;
-                }
-            }
-        });
-
-        tblRequests.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                vpViewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        vpViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                tblRequests.getTabAt(position).select();
-            }
-        });
-
-
-    }
-}
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
 
 
-
-        /*rcvRequests = findViewById(R.id.rcvRequests);
+        rcvRequests = view.findViewById(R.id.rcvRequests);
+        txvEmptyView = view.findViewById(R.id.empty_view);
         requestsData = new ArrayList<>();
-        rcvRequests.setLayoutManager(new LinearLayoutManager(this));
-        requestAdapter = new RequestAdapter(requestsData, RequestsActivity.this);
+        rcvRequests.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcvRequests.setHasFixedSize(true);
+        requestAdapter = new RequestAdapter(requestsData, getContext());
         rcvRequests.setAdapter(requestAdapter);
-
 
         //Firebase
         db = FirebaseFirestore.getInstance();
@@ -111,7 +63,7 @@ public class RequestsActivity extends AppCompatActivity {
         });
 
         DocumentReference documentReference = db.collection("users").document(userID);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        documentReference.addSnapshotListener((EventListener<DocumentSnapshot>) new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 String bloodGroup = value.getString("bloodGroup");
@@ -125,8 +77,10 @@ public class RequestsActivity extends AppCompatActivity {
                                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                             for (DocumentSnapshot d : list) {
                                                 ArrayList list1 = (ArrayList) d.get("declinedBy");
-                                                if (Boolean.FALSE.equals(d.getBoolean("isCompleted")) && !(list1.contains(userID))) {
+                                                if (Boolean.FALSE.equals(d.getBoolean("isCompleted")) && !(list1.contains(userID)) && !d.getString("receiverId").equals(userID)) {
                                                     RequestModel obj = d.toObject(RequestModel.class);
+                                                    if(d.getBoolean("isAccepted").booleanValue())
+                                                        obj.setAccepted(true);
                                                     requestsData.add(obj);
                                                 }
                                             }
@@ -239,8 +193,29 @@ public class RequestsActivity extends AppCompatActivity {
                             break;
                     }
                 }
+                if(requestsData.isEmpty()){
+                    rcvRequests.setVisibility(View.GONE);
+                    txvEmptyView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    rcvRequests.setVisibility(View.VISIBLE);
+                    txvEmptyView.setVisibility(View.GONE);
+                }
+
+
             }
         });
 
+
+
     }
-}*/
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_nearby_requests, container, false);
+
+
+    }
+}

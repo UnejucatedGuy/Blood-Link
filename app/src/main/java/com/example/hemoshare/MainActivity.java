@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     Button btnLogOut,btnProfile,btnNewProfile,btnRequestBlood;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +32,17 @@ public class MainActivity extends AppCompatActivity {
 
         //Firebase auth
         mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getCurrentUser().getUid();
 
 
 
 
         //Click Listeners
-        btnProfile.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,ProfileActivity.class)));
+        btnProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            intent.putExtra("userId",userId);
+            startActivity(intent);
+        });
 
         btnNewProfile.setOnClickListener(v -> {
             //startActivity(new Intent(MainActivity.this,NewProfileActivity.class));

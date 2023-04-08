@@ -1,18 +1,15 @@
 package com.example.hemoshare;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentReference;
@@ -20,8 +17,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import java.util.Random;
 
 public class RequestAcceptedReceiverActivity extends AppCompatActivity {
 
@@ -46,13 +41,17 @@ public class RequestAcceptedReceiverActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         requestId = intent.getStringExtra("requestId");
-        donorName = intent.getStringExtra("donorName");
+        /*donorName = intent.getStringExtra("donorName");
         donorPhoneNumber = intent.getStringExtra("donorPhoneNumber");
         donorId = intent.getStringExtra("donorId");
         code = intent.getStringExtra("code");
         requestLat = intent.getDoubleExtra("requestLat", 0);
         requestLng = intent.getDoubleExtra("requestLng", 0);
-        requestLatlng = new LatLng(requestLat, requestLng);
+        requestLatlng = new LatLng(requestLat, requestLng);*/
+
+
+
+
 
         txvDonorName = findViewById(R.id.txvDonorName);
         txvDonorPhoneNumber = findViewById(R.id.txvDonorPhoneNumber);
@@ -60,12 +59,28 @@ public class RequestAcceptedReceiverActivity extends AppCompatActivity {
         btnCall = findViewById(R.id.btnCall);
         btnVisitProfile = findViewById(R.id.btnVisitProfile);
 
-        //FireBase
+
+//FireBase
         db = FirebaseFirestore.getInstance();
 
-        documentReference = db.collection("requests").document(requestId);
+        db.collection("requests").document(requestId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                donorName = documentSnapshot.getString("donorName");
+                donorPhoneNumber = documentSnapshot.getString("donorPhoneNumber");
+                donorId = documentSnapshot.getString("donorId");
+                code = documentSnapshot.getString("code");
+                requestLat = documentSnapshot.getDouble("requestLat");
+                requestLng = documentSnapshot.getDouble("requestLng");
+                requestLatlng = new LatLng(requestLat, requestLng);
+                updateUI();
 
-        updateUI();
+            }
+        });
+
+
+
+
 
         //click Listners
         btnCall.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +95,9 @@ public class RequestAcceptedReceiverActivity extends AppCompatActivity {
         btnVisitProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Open Profile Activity here
+                Intent intent = new Intent(RequestAcceptedReceiverActivity.this, ProfileActivity.class);
+                intent.putExtra("userId",donorId);
+                startActivity(intent);
             }
         });
 

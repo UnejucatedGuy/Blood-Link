@@ -3,6 +3,7 @@ package com.example.hemoshare;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -40,6 +41,9 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        Intent intent = getIntent();
+        userID = intent.getStringExtra("userId");
+
         //Binding UI
         tvProfileName = findViewById(R.id.tvProfileName);
         tvAge = findViewById(R.id.tvAge);
@@ -56,7 +60,6 @@ public class ProfileActivity extends AppCompatActivity {
         //Firebase
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        userID = mAuth.getCurrentUser().getUid();
         storageRef = FirebaseStorage.getInstance().getReference();
         getProfileData();
 
@@ -103,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
     
     public void setProfileImage(){
-        StorageReference fileRef = storageRef.child("users/"+mAuth.getCurrentUser().getUid()+"/profile.jpg");
+        StorageReference fileRef = storageRef.child("users/"+userID+"/profile.jpg");
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

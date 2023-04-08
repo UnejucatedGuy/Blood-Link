@@ -48,13 +48,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:textStyle="bold"
-                        android:text="Needs "
+                        android:text="You requested for "
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/txvBloodGroup"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
+                        android:textColor="@color/red"
                         android:textStyle="bold"
                         android:text="AB+"
                         android:textSize="16sp" />
@@ -63,11 +64,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:textStyle="bold"
-                        android:text=" blood donor"
+                        android:text=" blood"
                         android:textSize="16sp" />
                 </LinearLayout>
 
-                <LinearLayout
+                <!--<LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -85,7 +86,7 @@
                         android:textAlignment="center"
                         android:textSize="14sp" />
 
-                </LinearLayout>
+                </LinearLayout>-->
 
                 <TextView
                     android:id="@+id/txvTime"

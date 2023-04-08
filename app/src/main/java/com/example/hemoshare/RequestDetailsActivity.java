@@ -1,20 +1,17 @@
 package com.example.hemoshare;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -25,25 +22,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class RequestDetailsActivity extends AppCompatActivity {
@@ -122,12 +111,12 @@ public class RequestDetailsActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(RequestDetailsActivity.this,RequestAcceptedUserActivity.class);
                         intent.putExtra("requestId",requestId);
-                        intent.putExtra("name",name);
+                        /*intent.putExtra("name",name);
                         intent.putExtra("phoneNumber",phoneNumber);
                         intent.putExtra("address",address);
                         intent.putExtra("note",note);
                         intent.putExtra("requestLat", requestLatlng.latitude);
-                        intent.putExtra("requestLng", requestLatlng.longitude);
+                        intent.putExtra("requestLng", requestLatlng.longitude);*/
                         startActivity(intent);
                         finish();
                     }
@@ -137,6 +126,17 @@ public class RequestDetailsActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+
+        btnDeclineRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.collection("requests").document(requestId).update("declinedBy", FieldValue.arrayUnion(userId));
+                /*Intent intent = new Intent(RequestDetailsActivity.this,RequestsActivity.class);
+                startActivity(intent);
+                finish();*/
+                RequestDetailsActivity.super.onBackPressed();
             }
         });
     }
