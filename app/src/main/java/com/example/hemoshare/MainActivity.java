@@ -1,22 +1,27 @@
 package com.example.hemoshare;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.checkerframework.checker.units.qual.C;
 
 public class MainActivity extends AppCompatActivity {
 
+    BottomNavigationView bnbBottonNavigationBar;
+
+
     FirebaseAuth mAuth;
-    Button btnLogOut,btnProfile,btnNewProfile,btnRequestBlood;
+    Button btnLogOut, btnProfile, btnNewProfile, btnRequestBlood;
     private String userId;
 
     @Override
@@ -24,7 +29,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Binding UI
+        bnbBottonNavigationBar = findViewById(R.id.bnbBottonNavigationBar);
+
+        replaceFragment(new HomeFragment());
+
+        bnbBottonNavigationBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.bnmiHome:
+                        replaceFragment(new HomeFragment());
+                        break;
+                    case R.id.bnmiNewRequest:
+                        replaceFragment(new BloodRequestFragment());
+                        break;
+                }
+                return true;
+            }
+        });
+
+       /* //Binding UI
         btnLogOut=findViewById(R.id.btnLogOut);
         btnProfile = findViewById(R.id.btnProfile);
         btnNewProfile = findViewById(R.id.btnNewProfile);
@@ -47,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         btnNewProfile.setOnClickListener(v -> {
             //startActivity(new Intent(MainActivity.this,NewProfileActivity.class));
             Intent intent = new Intent(MainActivity.this, RequestsActivity.class);
+            intent.putExtra("activityCode","new");
             startActivity(intent);//test
 
         });
@@ -58,10 +83,19 @@ public class MainActivity extends AppCompatActivity {
         btnRequestBlood.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, RequestBloodActivity.class)));
 
     }
-
+*/
+    }
     @Override
     public void onBackPressed() {
 
     }
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flFrameLayout,fragment);
+        fragmentTransaction.commit();
+
+    }
+
 
 }

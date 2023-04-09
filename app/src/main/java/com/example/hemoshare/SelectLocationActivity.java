@@ -1,9 +1,6 @@
 package com.example.hemoshare;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -14,10 +11,13 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.Manifest;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -59,7 +59,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     Marker marker;
     double selectedLat, selectedLng;
     List<Address> addressList;
-    String selectedAddress;
+    String selectedAddress,city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +103,8 @@ public class SelectLocationActivity extends AppCompatActivity {
                 resultIntent.putExtra("address", selectedAddress);
                 resultIntent.putExtra("lat",selectedLat);
                 resultIntent.putExtra("lng",selectedLng);
+                resultIntent.putExtra("city",city);
+
 
                 setResult(RESULT_OK, resultIntent);
                 finish();
@@ -139,6 +141,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                                 }
                                 if (addressList != null) {
                                     String mAddress = addressList.get(0).getAddressLine(0);
+                                    city = addressList.get(0).getLocality();
                                     selectedLat = latLng.latitude;
                                     selectedLng = latLng.longitude;
                                     selectedAddress = mAddress;

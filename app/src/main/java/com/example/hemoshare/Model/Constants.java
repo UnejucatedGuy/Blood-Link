@@ -1,16 +1,7 @@
 package com.example.hemoshare.Model;
 
-import android.app.Activity;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.example.hemoshare.MainActivity;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Constants {
@@ -25,7 +16,6 @@ public class Constants {
     public static final String A_NEG = "/topics/A_NEG";
     public static final String B_POS = "/topics/B_POS";
     public static final String B_NEG = "/topics/B_NEG";
-    private static FirebaseFirestore db;
 
 
 

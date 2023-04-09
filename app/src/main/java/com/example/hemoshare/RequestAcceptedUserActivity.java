@@ -67,7 +67,7 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 name = documentSnapshot.getString("name");
-                phoneNumber= documentSnapshot.getString("phoneNo");
+                phoneNumber= documentSnapshot.getString("phoneNumber");
                 address= documentSnapshot.getString("location");
                 note= documentSnapshot.getString("note");
                 requestLat= documentSnapshot.getDouble("requestLat");

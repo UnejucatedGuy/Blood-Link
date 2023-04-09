@@ -1,39 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
+
     tools:context=".MainActivity">
 
-    <Button
+    <!--<Button
         android:id="@+id/btnLogOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Log Out"
         />
+
     <Button
         android:id="@+id/btnProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="40dp"
-        android:text="Profile"/>
+        android:layout_marginEnd="321dp"
+        android:text="Profile" />
 
     <Button
         android:id="@+id/btnNewProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnRequest"
         android:layout_marginTop="40dp"
-        android:text="New Profile"/>
+        android:layout_marginBottom="127dp"
+        android:text="New Profile" />
 
     <Button
         android:id="@+id/btnRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="40dp"
-        android:text="Request Blood"/>
+        android:layout_marginBottom="395dp"
+        android:text="Request Blood" />-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/flFrameLayout"/>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bnbBottonNavigationBar"
+        app:menu="@menu/menu_bottom_navigation"
+        android:background="@drawable/shape_bottom_navigation"
+        app:itemIconTint="@color/cream"
+        style="@style/Widget.Material3.BottomNavigationView.ActiveIndicator"
+        app:itemTextColor="@color/cream"
+        android:layout_alignParentBottom="true">
 
-</LinearLayout>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+</RelativeLayout>

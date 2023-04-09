@@ -11,10 +11,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="30dp"
+        android:layout_margin="20dp"
         android:backgroundTint="@color/cream"
         app:cardCornerRadius="30dp">
 
@@ -83,12 +80,44 @@
                 android:id="@+id/txvDonorName"
                 android:text="Om Parab"
                 android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textview.MaterialTextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="10dp"
+                android:maxHeight="90dp"
+                android:text="How was your experience with this donor"
+                android:textAlignment="center"
                 android:textSize="16sp"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                android:numStars="5"
+                android:layout_margin="10dp"
+
+                />
+            <com.google.android.material.textview.MaterialTextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txvRatingText"
+                android:maxHeight="90dp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="20sp"
                 android:textStyle="bold" />
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"/>
+                android:layout_margin="20dp"
+                />
 
             <com.google.android.material.textview.MaterialTextView
 

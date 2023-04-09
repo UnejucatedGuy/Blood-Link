@@ -9,5 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="cream">#FFF3EED9</color>
     <color name="red">#F44336</color>
+    <!--<color name="red"> #FF5A5F</color>-->
+    <color name="pink">#FFE19991</color>
 
 </resources>

@@ -10,6 +10,7 @@
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/cream"
         android:id="@+id/tblRequests"
         app:layout_constraintTop_toTopOf="parent"/>
 

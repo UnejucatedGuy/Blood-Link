@@ -1,14 +1,15 @@
 package com.example.hemoshare;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,11 +26,11 @@ import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView tvProfileName,tvAge, tvBloodGroup,tvGender,tvName,tvEmail,tvPhoneNo,tvCity,tvDonationCount,tvDonorRatings;
+    TextView tvProfileName, tvAge, tvBloodGroup, tvGender, tvName, tvEmail, tvPhoneNo, tvCity, tvDonationCount, tvDonorRatings;
     Button btnEditProfile;
     ImageView imgProfile;
 
-    String name,age, bloodGroup,gender,email,phoneNo,city,userID;
+    String name, age, bloodGroup, gender, email, phoneNo, city, userID;
     Uri profileImgUri;
 
     FirebaseFirestore db;
@@ -48,13 +49,14 @@ public class ProfileActivity extends AppCompatActivity {
         tvProfileName = findViewById(R.id.tvProfileName);
         tvAge = findViewById(R.id.tvAge);
         tvBloodGroup = findViewById(R.id.tvBloodGroup);
-        tvGender = findViewById(R.id.tvGender);
+        //tvGender = findViewById(R.id.tvGender);
         tvName = findViewById(R.id.tvName);
         tvEmail = findViewById(R.id.tvEmail);
         tvPhoneNo = findViewById(R.id.tvPhoneNumber);
         tvCity = findViewById(R.id.tvCity);
         tvDonationCount = findViewById(R.id.tvDonationCount);
         tvDonorRatings = findViewById(R.id.tvDonorRatings);
+        btnEditProfile = findViewById(R.id.btnEditProfile);
         imgProfile = findViewById(R.id.imgProfile);
 
         //Firebase
@@ -63,6 +65,12 @@ public class ProfileActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         getProfileData();
 
+        //click listners
+        btnEditProfile.setOnClickListener(v -> {
+            Intent intent1 = new Intent(ProfileActivity.this, NewProfileActivity.class);
+            intent1.putExtra("activityCode","edit");
+            startActivity(intent1);
+        });
 
 
 
@@ -74,46 +82,51 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 name = value.getString("name");
-                //age = String.valueOf(calculateAge((Integer) value.get("birthYear")));
+                age = calculateAge(value.getLong("birthYear"));
                 bloodGroup = value.getString("bloodGroup");
-                gender = value.getString("gender");
+                //gender = value.getString("gender");
                 email = value.getString("email");
-                phoneNo = value.getString("phoneNo");
+                phoneNo = value.getString("phoneNumber");
                 city = value.getString("city");
 
                 //updateUi
                 tvProfileName.setText(name);
-                //tvAge.setText(age);
+                tvAge.setText(age);
                 tvBloodGroup.setText(bloodGroup);
-                tvGender.setText(gender);
+                //tvGender.setText(gender);
                 tvName.setText(name);
                 tvEmail.setText(email);
                 tvPhoneNo.setText(phoneNo);
                 tvCity.setText(city);
+                if (userID.equals(mAuth.getCurrentUser().getUid()))
+                    btnEditProfile.setVisibility(View.VISIBLE);
+                else
+                    btnEditProfile.setVisibility(View.GONE);
                 setProfileImage();
-                
 
 
             }
         });
     }
 
-    private int calculateAge(int birthYear){
+    private String calculateAge(long birthYear) {
 
         Calendar calendar = Calendar.getInstance();
-        int curYear = calendar.get(Calendar.YEAR);
-        return curYear - birthYear;
+        long curYear = calendar.get(Calendar.YEAR);
+        return String.valueOf(curYear - birthYear-1);
     }
-    
-    public void setProfileImage(){
-        StorageReference fileRef = storageRef.child("users/"+userID+"/profile.jpg");
+
+    public void setProfileImage() {
+        StorageReference fileRef = storageRef.child("users/" + userID + "/profile.jpg");
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(imgProfile);
+
+
             }
         });
     }
-        
+
 
 }

@@ -1,5 +1,7 @@
 package com.example.hemoshare;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static com.example.hemoshare.Model.Constants.AB_NEG;
 import static com.example.hemoshare.Model.Constants.AB_POS;
 import static com.example.hemoshare.Model.Constants.A_NEG;
@@ -12,7 +14,9 @@ import static com.example.hemoshare.Model.Constants.O_POS;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -20,7 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.hemoshare.Model.Constants;
 import com.example.hemoshare.Model.NotificationData;
@@ -51,8 +55,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RequestBloodActivity extends AppCompatActivity {
 
+public class BloodRequestFragment extends Fragment {
 
     TextInputLayout tilName, tilPhoneNumber, tilLocation, tilBloodGroup, tilNote;
     AutoCompleteTextView actvBloodGroup, actvLocation;
@@ -69,22 +73,20 @@ public class RequestBloodActivity extends AppCompatActivity {
 
     DateFormat formatter = new SimpleDateFormat("h:mm a");
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_blood);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         //Binding UI
-        tilName = findViewById(R.id.tilName);
-        tilPhoneNumber = findViewById(R.id.tilPhoneNumber);
-        tilLocation = findViewById(R.id.tilLocation);
-        actvBloodGroup = findViewById(R.id.actvBloodGroup);
-        actvLocation = findViewById(R.id.actvLocation);
-        tilBloodGroup = findViewById(R.id.tilBloodGroup);
-        tilNote = findViewById(R.id.tilNote);
-        btnRequestBlood = findViewById(R.id.btnRequestBlood);
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item_blood_group, bloodGroups);
+        tilName = view.findViewById(R.id.tilName);
+        tilPhoneNumber = view.findViewById(R.id.tilPhoneNumber);
+        tilLocation = view.findViewById(R.id.tilLocation);
+        actvBloodGroup = view.findViewById(R.id.actvBloodGroup);
+        actvLocation = view.findViewById(R.id.actvLocation);
+        tilBloodGroup = view.findViewById(R.id.tilBloodGroup);
+        tilNote = view.findViewById(R.id.tilNote);
+        btnRequestBlood = view.findViewById(R.id.btnRequestBlood);
+        arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.item_blood_group, bloodGroups);
         actvBloodGroup.setAdapter(arrayAdapter);
 
 
@@ -118,7 +120,7 @@ public class RequestBloodActivity extends AppCompatActivity {
         actvLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(RequestBloodActivity.this, SelectLocationActivity.class), 1);
+                startActivityForResult(new Intent(getContext(), SelectLocationActivity.class), 1);
 
             }
         });
@@ -132,7 +134,7 @@ public class RequestBloodActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1) {
@@ -143,7 +145,7 @@ public class RequestBloodActivity extends AppCompatActivity {
                 actvLocation.setText(result);
             }
             if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Please selact a Location on Map", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Please selact a Location on Map", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -153,14 +155,14 @@ public class RequestBloodActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PushNotification> call, Response<PushNotification> response) {
                 if (response.isSuccessful())
-                    Toast.makeText(RequestBloodActivity.this, "Notification Send To Users", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Notification Send To Users", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(RequestBloodActivity.this, "error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<PushNotification> call, Throwable t) {
-                Toast.makeText(RequestBloodActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -254,7 +256,7 @@ public class RequestBloodActivity extends AppCompatActivity {
                             //Sending Notification
                             PushNotification notification = new PushNotification(new NotificationData("Blood Requirement in your Area", name + " needs " + bloodGroup + " Blood",requestId), TOPIC);
                             sendNotification(notification);
-                            Toast.makeText(RequestBloodActivity.this, "Request Submitted Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Request Submitted Successfully", Toast.LENGTH_SHORT).show();
                             assignNotifications();
 
                         }
@@ -271,17 +273,16 @@ public class RequestBloodActivity extends AppCompatActivity {
 
         userID = mAuth.getCurrentUser().getUid();
         DocumentReference documentReference = db.collection("users").document(userID);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 String userBloodGroup = value.getString("bloodGroup");
                 Constants.assignBloodGroups(userBloodGroup);
             }
         });
-        Intent intent = new Intent(RequestBloodActivity.this, WaitingToAcceptActivity.class);
+        Intent intent = new Intent(getContext(), WaitingToAcceptActivity.class);
         intent.putExtra("requestId", requestId);
         startActivity(intent);
-        finish();
     }
 
     private void generateCode() {
@@ -289,5 +290,14 @@ public class RequestBloodActivity extends AppCompatActivity {
         int number = rnd.nextInt(999999);
         // this will convert any number sequence into 6 character.
         code = String.format("%06d", number);
+    }
+
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_blood_request, container, false);
     }
 }

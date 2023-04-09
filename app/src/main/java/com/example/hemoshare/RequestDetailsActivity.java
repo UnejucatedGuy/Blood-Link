@@ -100,7 +100,7 @@ public class RequestDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         donorName = value.getString("name");
-                        donorPhoneNumber = value.getString("phoneNo");
+                        donorPhoneNumber = value.getString("phoneNumber");
 
                         Map<String, Object> request = new HashMap<>();
                         request.put("donorId", userId);
@@ -167,7 +167,7 @@ public class RequestDetailsActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 name = value.getString("name");
-                phoneNumber = value.getString("phoneNo");
+                phoneNumber = value.getString("phoneNumber");
                 address = value.getString("location");
                 bloodGroup = value.getString("bloodGroup");
                 note = value.getString("note");
