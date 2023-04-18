@@ -1,6 +1,6 @@
 package com.example.hemoshare.api;
 
-import static com.example.hemoshare.Model.Constants.BASE_URL;
+import static com.example.hemoshare.Models.Constants.BASE_URL;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

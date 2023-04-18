@@ -13,11 +13,11 @@
         android:layout_alignParentTop="true"
         android:textStyle="bold"
         android:layout_marginTop="30dp"/>-->
-    <!--<fragment
+    <fragment
         android:id="@+id/google_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />-->
+        android:layout_height="match_parent" />
 
 
     <androidx.cardview.widget.CardView

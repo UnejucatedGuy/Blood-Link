@@ -1,4 +1,4 @@
-package com.example.hemoshare.Model;
+package com.example.hemoshare.Models;
 
 public class PushNotification {
     private NotificationData data;

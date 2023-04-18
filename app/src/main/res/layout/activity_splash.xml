@@ -12,10 +12,10 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="438dp"
-        android:layout_height="222dp"
+        android:layout_height="137dp"
         app:srcCompat="@drawable/hemo_share_logo" />
-    <TextView
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Give the Gift of The Life"/>
+        android:text="Give the Gift of The Life"/>-->
 </LinearLayout>

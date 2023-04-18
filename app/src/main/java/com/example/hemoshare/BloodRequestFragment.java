@@ -2,14 +2,14 @@ package com.example.hemoshare;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static com.example.hemoshare.Model.Constants.AB_NEG;
-import static com.example.hemoshare.Model.Constants.AB_POS;
-import static com.example.hemoshare.Model.Constants.A_NEG;
-import static com.example.hemoshare.Model.Constants.A_POS;
-import static com.example.hemoshare.Model.Constants.B_NEG;
-import static com.example.hemoshare.Model.Constants.B_POS;
-import static com.example.hemoshare.Model.Constants.O_NEG;
-import static com.example.hemoshare.Model.Constants.O_POS;
+import static com.example.hemoshare.Models.Constants.AB_NEG;
+import static com.example.hemoshare.Models.Constants.AB_POS;
+import static com.example.hemoshare.Models.Constants.A_NEG;
+import static com.example.hemoshare.Models.Constants.A_POS;
+import static com.example.hemoshare.Models.Constants.B_NEG;
+import static com.example.hemoshare.Models.Constants.B_POS;
+import static com.example.hemoshare.Models.Constants.O_NEG;
+import static com.example.hemoshare.Models.Constants.O_POS;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,9 +26,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.hemoshare.Model.Constants;
-import com.example.hemoshare.Model.NotificationData;
-import com.example.hemoshare.Model.PushNotification;
+import com.example.hemoshare.Models.Constants;
+import com.example.hemoshare.Models.NotificationData;
+import com.example.hemoshare.Models.PushNotification;
 import com.example.hemoshare.api.ApiUtilities;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;

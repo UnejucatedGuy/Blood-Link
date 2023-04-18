@@ -52,6 +52,7 @@
         app:menu="@menu/menu_bottom_navigation"
         android:background="@drawable/shape_bottom_navigation"
         app:itemIconTint="@color/cream"
+        app:itemActiveIndicatorStyle="@color/pink"
         style="@style/Widget.Material3.BottomNavigationView.ActiveIndicator"
         app:itemTextColor="@color/cream"
         android:layout_alignParentBottom="true">

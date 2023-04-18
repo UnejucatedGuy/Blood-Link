@@ -1,4 +1,4 @@
-package com.example.hemoshare;
+package com.example.hemoshare.Models;
 
 public class RequestModel {
 

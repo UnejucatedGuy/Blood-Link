@@ -17,18 +17,20 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DonationCompleteActivity extends AppCompatActivity {
 
-    String donorName,donorId,donorRating;
+    String donorName, donorId, donorRating, numberOfDonations;
     Double donorNowRating;
-    MaterialTextView txvDonarName,txvRatingText;
+    MaterialTextView txvDonarName, txvRatingText;
     RatingBar ratingBar;
     ImageView imgvDonor;
     Button btnGoToHome;
@@ -65,13 +67,13 @@ public class DonationCompleteActivity extends AppCompatActivity {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if (rating>4)
+                if (rating > 4)
                     txvRatingText.setText("Great");
-                else if (rating>3)
+                else if (rating > 3)
                     txvRatingText.setText("Good");
-                else if (rating>2)
+                else if (rating > 2)
                     txvRatingText.setText("Average");
-                else if (rating>1)
+                else if (rating > 1)
                     txvRatingText.setText("Bad");
                 else
                     txvRatingText.setText("Worst");
@@ -86,37 +88,69 @@ public class DonationCompleteActivity extends AppCompatActivity {
         btnGoToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                db.collection("users").document(donorId).update("ratingArray", FieldValue.arrayUnion(donorNowRating)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                startActivity(new Intent(DonationCompleteActivity.this, MainActivity.class));
+                finish();
+                //updateRating();
+                /*db.collection("users").document(donorId).update("ratingArray", FieldValue.arrayUnion(donorNowRating)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         db.collection("users").document(donorId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                //List<Double> ratingArray = (List<Double>) value.get("ratingArray");
-                        /*Double sum = 0.0;
-                        for (Double d : ratingArray)
-                            sum += d;
-                        donorRating = String.valueOf(sum/ratingArray.size());*/
-                        /*db.collection("users").document(donorId).update("donorRating", donorRating).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                startActivity(new Intent(DonationCompleteActivity.this,MainActivity.class));
-                                finish();
-                            }
-                        });*/
+                                List<Double> ratingArray = (List<Double>) value.get("ratingArray");
+                                Double sum = 0.0;
+                                for (Double d : ratingArray)
+                                    sum += d;
+                                donorRating = String.valueOf(sum / ratingArray.size());
+                                db.collection("users").document(donorId).update("donorRating", donorRating).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        startActivity(new Intent(DonationCompleteActivity.this, MainActivity.class));
+                                        finish();
+                                    }
+                                });
                             }
                         });
 
                     }
-                });
+                });*/
 
             }
-                });
+        });
 
 
+    }
 
+    private void updateRating() {
+        db.collection("users").document(donorId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                numberOfDonations = value.getString("numberOfDonations");
+            }
+        });
 
+        Map<String, Object> rating = new HashMap<>();
+        rating.put(numberOfDonations, rating);
+        //db.collection("users").document(donorId).update("rating", Field);
+
+        db.collection("users").document(donorId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Map<String, Object> rating = value.getData();
+                Double sum = 0.0;
+                for (Map.Entry<String, Object> entry : rating.entrySet()) {
+                    sum+=Double.parseDouble((String)entry.getValue());
+                }
+                donorRating = String.valueOf(sum/rating.size());
+            }
+        });
+        db.collection("users").document(donorId).update("donorRating", donorRating).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                startActivity(new Intent(DonationCompleteActivity.this, MainActivity.class));
+                finish();
+            }
+        });
 
     }
 
@@ -126,7 +160,7 @@ public class DonationCompleteActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        StorageReference fileRef = storageRef.child("users/"+donorId+"/profile.jpg");
+        StorageReference fileRef = storageRef.child("users/" + donorId + "/profile.jpg");
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

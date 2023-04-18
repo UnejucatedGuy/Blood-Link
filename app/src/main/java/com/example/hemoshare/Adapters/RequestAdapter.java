@@ -1,4 +1,4 @@
-package com.example.hemoshare;
+package com.example.hemoshare.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.hemoshare.R;
+import com.example.hemoshare.RequestAcceptedUserActivity;
+import com.example.hemoshare.RequestDetailsActivity;
+import com.example.hemoshare.Models.RequestModel;
 
 import java.util.ArrayList;
 

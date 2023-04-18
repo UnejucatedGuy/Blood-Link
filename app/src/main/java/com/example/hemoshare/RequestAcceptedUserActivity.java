@@ -1,16 +1,27 @@
 package com.example.hemoshare;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,16 +30,25 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.List;
 import java.util.Objects;
 
 public class RequestAcceptedUserActivity extends AppCompatActivity implements EnterCodeDialog.EnterCodeDialogListner {
 
-    String requestId, name, phoneNumber, address, note,requestCode,numberOfDonations,userId;
+    String requestId, name, phoneNumber, address, note,requestCode,numberOfDonations,userId,bloodGroup;
 
     MaterialTextView txvName, txvAddress, txvNote, txvPhoneNumber;
     Button btnEnterCode,btnGetDirections,btnCall;
+
+
+    //MAP
+    SupportMapFragment supportMapFragment;
+    FusedLocationProviderClient client;
     LatLng requestLatlng;
     Double requestLat,requestLng;
+    List<Address> addressList;
+    Marker marker;
+    GoogleMap mMap;
 
     //Firebase
     FirebaseFirestore db;
@@ -50,6 +70,10 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
         requestLng = intent.getDoubleExtra("requestLng",0);
         requestLatlng = new LatLng(requestLat,requestLng);*/
 
+        //Map
+        supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
+        client = LocationServices.getFusedLocationProviderClient(this);
+
         //Firebase
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -62,6 +86,8 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
         btnCall = findViewById(R.id.btnCall);
         btnEnterCode = findViewById(R.id.btnEnterCode);
         btnGetDirections = findViewById(R.id.btnGetDirection);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 
         db.collection("requests").document(requestId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -70,6 +96,7 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
                 phoneNumber= documentSnapshot.getString("phoneNumber");
                 address= documentSnapshot.getString("location");
                 note= documentSnapshot.getString("note");
+                bloodGroup= documentSnapshot.getString("bloodGroup");
                 requestLat= documentSnapshot.getDouble("requestLat");
                 requestLng= documentSnapshot.getDouble("requestLng");
                 requestLatlng = new LatLng(requestLat,requestLng);
@@ -137,6 +164,18 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
         txvPhoneNumber.setText(phoneNumber);
         txvAddress.setText(address);
         txvNote.setText(note);
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull GoogleMap googleMap) {
+                if (requestLatlng != null) {
+                    mMap = googleMap;
+                    MarkerOptions markerOptions = new MarkerOptions().position(requestLatlng).title("needs " + bloodGroup);
+                    marker = mMap.addMarker(markerOptions);
+                    LatLng focusLatlng = new LatLng(requestLatlng.latitude - 0.0037, requestLatlng.longitude);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(focusLatlng, 16));
+                }
+            }
+        });
 
     }
 

@@ -46,6 +46,7 @@ public class RequestDetailsActivity extends AppCompatActivity {
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
 
+
     //Firebase
     FirebaseFirestore db;
     FirebaseAuth mAuth;
@@ -78,8 +79,6 @@ public class RequestDetailsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         userId = mAuth.getCurrentUser().getUid();
-
-
 
         getRequestData();
 
@@ -133,10 +132,9 @@ public class RequestDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 db.collection("requests").document(requestId).update("declinedBy", FieldValue.arrayUnion(userId));
-                /*Intent intent = new Intent(RequestDetailsActivity.this,RequestsActivity.class);
+                Intent intent = new Intent(RequestDetailsActivity.this,MainActivity.class);
                 startActivity(intent);
-                finish();*/
-                RequestDetailsActivity.super.onBackPressed();
+                finish();
             }
         });
     }

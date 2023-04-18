@@ -20,7 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.hemoshare.Model.Constants;
+import com.example.hemoshare.Models.Constants;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,6 +59,8 @@ public class NewProfileActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     StorageReference storageRef;
 
+    Calendar calendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +74,8 @@ public class NewProfileActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         userID = mAuth.getCurrentUser().getUid();
         storageRef = FirebaseStorage.getInstance().getReference();
+
+        calendar = Calendar.getInstance();
 
 
         //Binding UI
@@ -108,6 +112,11 @@ public class NewProfileActivity extends AppCompatActivity {
 
                 }
             });
+        }
+        else if (activityCode.equals("new")) {
+            name = intent.getStringExtra("name");
+            tilName.getEditText().setText(name);
+
         }
 
 
@@ -211,9 +220,10 @@ public class NewProfileActivity extends AppCompatActivity {
         }else if (activityCode.equals("new") && !isPictureSelected) {
             errorText.setVisibility(View.VISIBLE);
             btnImgSelect.requestFocus();
+        } else if ((calendar.get(Calendar.YEAR) - birthYear) < 18) {
+            tilBirthDate.setError("You are not eligible for Blood Donation");
+            tilBirthDate.requestFocus();
         } else {
-
-
 
 
             //Saving in Firebase Database
@@ -236,17 +246,16 @@ public class NewProfileActivity extends AppCompatActivity {
                 user.put("numberOfDonations", "-");
                 user.put("donorRating", "-");
                 user.put("ratingArray", Arrays.asList());
+                startActivity(new Intent(NewProfileActivity.this, MainActivity.class));
                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Constants.assignBloodGroups(bloodGroup);
                         Toast.makeText(NewProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(NewProfileActivity.this, MainActivity.class));
                         finish();
                     }
                 });
-            }
-            else{
+            } else {
                 Map<String, Object> user = new HashMap<>();
                 user.put("name", name);
                 user.put("phoneNumber", phoneNumber);
@@ -261,8 +270,8 @@ public class NewProfileActivity extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         Constants.assignBloodGroups(bloodGroup);
                         Toast.makeText(NewProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(NewProfileActivity.this,MainActivity.class);
-                        intent.putExtra("donorId",userID);
+                        Intent intent = new Intent(NewProfileActivity.this, MainActivity.class);
+                        intent.putExtra("donorId", userID);
                         startActivity(intent);
                         finish();
                     }
@@ -280,7 +289,7 @@ public class NewProfileActivity extends AppCompatActivity {
     }
 
     public void selectDate(){
-        Calendar calendar = Calendar.getInstance();
+
         DatePickerDialog dialog = new DatePickerDialog(NewProfileActivity.this,new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

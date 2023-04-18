@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import com.example.hemoshare.MainActivity;
 import com.example.hemoshare.R;
 import com.example.hemoshare.RequestDetailsActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -53,7 +52,7 @@ public class FirebaseService extends FirebaseMessagingService {
             manager.notify(notificationId,notification);
         }
         else{
-            PendingIntent intent1 = PendingIntent.getActivities(this,0,new Intent[]{intent},PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent intent1 = PendingIntent.getActivities(this, 0, new Intent[]{intent}, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
             Notification notification;
             notification = new NotificationCompat.Builder(this,CHANNEL_ID)
                     .setContentTitle(remoteMessage.getData().get("title"))
@@ -65,14 +64,6 @@ public class FirebaseService extends FirebaseMessagingService {
 
             manager.notify(notificationId,notification);
         }
-
-
-
-
-
-
-
-
 
     }
 

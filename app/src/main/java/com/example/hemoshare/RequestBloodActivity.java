@@ -1,13 +1,13 @@
 package com.example.hemoshare;
 
-import static com.example.hemoshare.Model.Constants.AB_NEG;
-import static com.example.hemoshare.Model.Constants.AB_POS;
-import static com.example.hemoshare.Model.Constants.A_NEG;
-import static com.example.hemoshare.Model.Constants.A_POS;
-import static com.example.hemoshare.Model.Constants.B_NEG;
-import static com.example.hemoshare.Model.Constants.B_POS;
-import static com.example.hemoshare.Model.Constants.O_NEG;
-import static com.example.hemoshare.Model.Constants.O_POS;
+import static com.example.hemoshare.Models.Constants.AB_NEG;
+import static com.example.hemoshare.Models.Constants.AB_POS;
+import static com.example.hemoshare.Models.Constants.A_NEG;
+import static com.example.hemoshare.Models.Constants.A_POS;
+import static com.example.hemoshare.Models.Constants.B_NEG;
+import static com.example.hemoshare.Models.Constants.B_POS;
+import static com.example.hemoshare.Models.Constants.O_NEG;
+import static com.example.hemoshare.Models.Constants.O_POS;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,9 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.hemoshare.Model.Constants;
-import com.example.hemoshare.Model.NotificationData;
-import com.example.hemoshare.Model.PushNotification;
+import com.example.hemoshare.Models.Constants;
+import com.example.hemoshare.Models.NotificationData;
+import com.example.hemoshare.Models.PushNotification;
 import com.example.hemoshare.api.ApiUtilities;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,9 +33,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Source;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -271,17 +269,18 @@ public class RequestBloodActivity extends AppCompatActivity {
 
         userID = mAuth.getCurrentUser().getUid();
         DocumentReference documentReference = db.collection("users").document(userID);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String userBloodGroup = value.getString("bloodGroup");
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String userBloodGroup = documentSnapshot.getString("bloodGroup");
                 Constants.assignBloodGroups(userBloodGroup);
+                Intent intent = new Intent(RequestBloodActivity.this, WaitingToAcceptActivity.class);
+                intent.putExtra("requestId", requestId);
+                startActivity(intent);
+                finish();
             }
         });
-        Intent intent = new Intent(RequestBloodActivity.this, WaitingToAcceptActivity.class);
-        intent.putExtra("requestId", requestId);
-        startActivity(intent);
-        finish();
+
     }
 
     private void generateCode() {

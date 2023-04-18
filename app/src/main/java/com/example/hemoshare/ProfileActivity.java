@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button btnEditProfile;
     ImageView imgProfile;
 
-    String name, age, bloodGroup, gender, email, phoneNo, city, userID;
+    String name, age, bloodGroup, gender, email, phoneNo, city, userID,numberOfDonations,donorRating;
     Uri profileImgUri;
 
     FirebaseFirestore db;
@@ -88,6 +88,8 @@ public class ProfileActivity extends AppCompatActivity {
                 email = value.getString("email");
                 phoneNo = value.getString("phoneNumber");
                 city = value.getString("city");
+                donorRating = value.getString("donorRating");
+                numberOfDonations = value.getString("numberOfDonations");
 
                 //updateUi
                 tvProfileName.setText(name);
@@ -98,6 +100,8 @@ public class ProfileActivity extends AppCompatActivity {
                 tvEmail.setText(email);
                 tvPhoneNo.setText(phoneNo);
                 tvCity.setText(city);
+                tvDonationCount.setText(numberOfDonations);
+                tvDonorRatings.setText(donorRating);
                 if (userID.equals(mAuth.getCurrentUser().getUid()))
                     btnEditProfile.setVisibility(View.VISIBLE);
                 else
@@ -113,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         long curYear = calendar.get(Calendar.YEAR);
-        return String.valueOf(curYear - birthYear-1);
+        return String.valueOf(curYear - birthYear);
     }
 
     public void setProfileImage() {

@@ -106,7 +106,7 @@ public class RequestAcceptedReceiverActivity extends AppCompatActivity {
         db.collection("requests").document(requestId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if((Boolean)value.get("isCompleted"))    {
+                if(value.getBoolean("isCompleted"))    {
                     Intent intent = new Intent(RequestAcceptedReceiverActivity.this,DonationCompleteActivity.class);
                     intent.putExtra("donorId",donorId);
                     intent.putExtra("donarName",donorName);

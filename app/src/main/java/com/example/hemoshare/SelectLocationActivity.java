@@ -187,6 +187,7 @@ public class SelectLocationActivity extends AppCompatActivity {
             }
             if (addressList != null) {
                 String mAddress = addressList.get(0).getAddressLine(0);
+                city = addressList.get(0).getLocality();
                 selectedAddress = mAddress;
 
                 if (selectedAddress != null) {

@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bnmiNewRequest:
                         replaceFragment(new BloodRequestFragment());
                         break;
+
                 }
                 return true;
             }

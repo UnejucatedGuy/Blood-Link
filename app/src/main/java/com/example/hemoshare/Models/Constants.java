@@ -1,4 +1,4 @@
-package com.example.hemoshare.Model;
+package com.example.hemoshare.Models;
 
 import androidx.annotation.NonNull;
 

@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:maxHeight="90dp"
-                android:text="Thanks for your Coopertion, \nfrom Team HemoShare"
+                android:text="Thanks for your Coopertion, \nfrom Team Blood Link"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -104,7 +104,7 @@
                     android:id="@+id/txvNumberOfDonations"
                     android:layout_margin="5dp"
                     android:maxHeight="90dp"
-                    android:text="3"
+                    android:text="0"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </androidx.appcompat.widget.LinearLayoutCompat>
