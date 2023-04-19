@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -26,9 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.List;
 import java.util.Objects;
@@ -137,17 +134,22 @@ public class RequestAcceptedUserActivity extends AppCompatActivity implements En
             }
         });
 
-        db.collection("users").document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                numberOfDonations =value.getString("numberOfDonations");
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.getString("numberOfDonations").equals("-")) {
+                    numberOfDonations="0";
+
+                } else {
+                    numberOfDonations = documentSnapshot.getString("numberOfDonations");
+                }
             }
         });
 
-        db.collection("requests").document(requestId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("requests").document(requestId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                requestCode = value.getString("code");
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                requestCode = documentSnapshot.getString("code");
             }
         });
     }

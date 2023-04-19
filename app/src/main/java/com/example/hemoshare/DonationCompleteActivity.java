@@ -9,22 +9,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DonationCompleteActivity extends AppCompatActivity {
 
@@ -47,7 +41,6 @@ public class DonationCompleteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_donation_complete);
 
         Intent intent = getIntent();
-        donorName = intent.getStringExtra("donorName");
         donorId = intent.getStringExtra("donorId");
 
 
@@ -82,15 +75,22 @@ public class DonationCompleteActivity extends AppCompatActivity {
 
             }
         });
+        db.collection("users").document(donorId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                donorName = documentSnapshot.getString("name");
+                txvDonarName.setText(donorName);
+            }
+        });
 
 
         //CLick Listners
         btnGoToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateRating();
                 startActivity(new Intent(DonationCompleteActivity.this, MainActivity.class));
                 finish();
-                //updateRating();
                 /*db.collection("users").document(donorId).update("ratingArray", FieldValue.arrayUnion(donorNowRating)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -122,16 +122,27 @@ public class DonationCompleteActivity extends AppCompatActivity {
     }
 
     private void updateRating() {
-        db.collection("users").document(donorId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        /*db.collection("users").document(donorId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 numberOfDonations = value.getString("numberOfDonations");
             }
         });
+        db.collection("users").document(donorId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Map<String, Object> rating = value.getData();
+                Double sum = 0.0;
+                for (Map.Entry<String, Object> entry : rating.entrySet()) {
+                    sum+=Double.parseDouble((String)entry.getValue());
+                }
+                donorRating = String.valueOf(sum/rating.size());
+            }
+        });
 
         Map<String, Object> rating = new HashMap<>();
-        rating.put(numberOfDonations, rating);
-        //db.collection("users").document(donorId).update("rating", Field);
+        rating.put("rating."+numberOfDonations, rating);
+        db.collection("users").document(donorId).set(rating, SetOptions.merge());
 
         db.collection("users").document(donorId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -150,7 +161,7 @@ public class DonationCompleteActivity extends AppCompatActivity {
                 startActivity(new Intent(DonationCompleteActivity.this, MainActivity.class));
                 finish();
             }
-        });
+        });*/
 
     }
 
@@ -160,12 +171,14 @@ public class DonationCompleteActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
+
         StorageReference fileRef = storageRef.child("users/" + donorId + "/profile.jpg");
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
+
                 Picasso.get().load(uri).into(imgvDonor);
-                txvDonarName.setText(donorName);
+
             }
         });
 

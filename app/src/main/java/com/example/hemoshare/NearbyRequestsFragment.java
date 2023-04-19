@@ -71,7 +71,7 @@ public class NearbyRequestsFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         String bloodGroup = value.getString("bloodGroup");
-                        requestsData.clear();
+
                         if (bloodGroup != null) {
                             switch (bloodGroup) {
                                 case "AB+":
@@ -79,6 +79,7 @@ public class NearbyRequestsFragment extends Fragment {
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    requestsData.clear();
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         ArrayList list1 = (ArrayList) d.get("declinedBy");
@@ -106,6 +107,7 @@ public class NearbyRequestsFragment extends Fragment {
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    requestsData.clear();
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         ArrayList list1 = (ArrayList) d.get("declinedBy");
@@ -133,6 +135,7 @@ public class NearbyRequestsFragment extends Fragment {
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    requestsData.clear();
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         ArrayList list1 = (ArrayList) d.get("declinedBy");
@@ -160,6 +163,7 @@ public class NearbyRequestsFragment extends Fragment {
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    requestsData.clear();
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         ArrayList list1 = (ArrayList) d.get("declinedBy");
@@ -187,6 +191,7 @@ public class NearbyRequestsFragment extends Fragment {
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    requestsData.clear();
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         ArrayList list1 = (ArrayList) d.get("declinedBy");
@@ -214,6 +219,7 @@ public class NearbyRequestsFragment extends Fragment {
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    requestsData.clear();
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         ArrayList list1 = (ArrayList) d.get("declinedBy");
@@ -241,6 +247,7 @@ public class NearbyRequestsFragment extends Fragment {
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    requestsData.clear();
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         ArrayList list1 = (ArrayList) d.get("declinedBy");
@@ -269,6 +276,7 @@ public class NearbyRequestsFragment extends Fragment {
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                    requestsData.clear();
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         if (Boolean.FALSE.equals(d.getBoolean("isCompleted"))) {

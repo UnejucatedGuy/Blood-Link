@@ -63,7 +63,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         public void onClick(View v) {
             int position = this.getAdapterPosition();
             RequestModel requestModel = requestData.get(position);
-            String requestId=requestModel.getRequestId();
+            String requestId = requestModel.getRequestId();
 
             Intent intent;
             if (requestModel.isAccepted()) {

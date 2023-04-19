@@ -59,7 +59,7 @@ public class RequestBloodActivity extends AppCompatActivity {
     String TOPIC = AB_POS;
     ArrayAdapter<String> arrayAdapter;
 
-    String name, phoneNumber, location, bloodGroup, urgency, note, time, userID, requestId, code,city;
+    String name, phoneNumber, location, bloodGroup, urgency, note, time, userID, requestId, code, city;
     double selectedLat, selectedLng;
 
     FirebaseFirestore db;
@@ -126,7 +126,7 @@ public class RequestBloodActivity extends AppCompatActivity {
     private void updateUI() {
         tilName.getEditText().setText(name);
         tilPhoneNumber.getEditText().setText(phoneNumber);
-        actvBloodGroup.setText(bloodGroup,false);
+        actvBloodGroup.setText(bloodGroup, false);
     }
 
     @Override
@@ -150,9 +150,10 @@ public class RequestBloodActivity extends AppCompatActivity {
         ApiUtilities.getClient().sendNotification(notification).enqueue(new Callback<PushNotification>() {
             @Override
             public void onResponse(Call<PushNotification> call, Response<PushNotification> response) {
-                if (response.isSuccessful())
+                if (response.isSuccessful()) {
+                    assignNotifications();
                     Toast.makeText(RequestBloodActivity.this, "Notification Send To Users", Toast.LENGTH_SHORT).show();
-                else
+                } else
                     Toast.makeText(RequestBloodActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
 
@@ -208,8 +209,8 @@ public class RequestBloodActivity extends AppCompatActivity {
             request.put("isCompleted", false);
             request.put("code", code);
             request.put("declinedBy", Arrays.asList());
-            request.put("receiverId",userID);
-            request.put("donorRatings","-");
+            request.put("receiverId", userID);
+            request.put("donorRatings", "-");
 
 
             //Saving in Firebase Database
@@ -250,10 +251,10 @@ public class RequestBloodActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             //Sending Notification
-                            PushNotification notification = new PushNotification(new NotificationData("Blood Requirement in your Area", name + " needs " + bloodGroup + " Blood",requestId), TOPIC);
+                            PushNotification notification = new PushNotification(new NotificationData("Blood Requirement in your Area", name + " needs " + bloodGroup + " Blood", requestId), TOPIC);
                             sendNotification(notification);
                             Toast.makeText(RequestBloodActivity.this, "Request Submitted Successfully", Toast.LENGTH_SHORT).show();
-                            assignNotifications();
+
 
                         }
                     });
